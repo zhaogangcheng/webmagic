@@ -230,7 +230,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	public boolean removeTrigdger(String triggerName, String group) {
 		TriggerKey triggerKey = new TriggerKey(triggerName, group);
 		try {
-			scheduler.pauseTrigger(triggerKey);// 停止触发器1
+			scheduler.pauseTrigger(triggerKey);// 停止触发器
 			return scheduler.unscheduleJob(triggerKey);// 移除触发器
 		} catch (SchedulerException e) {
 			throw new RuntimeException(e);
