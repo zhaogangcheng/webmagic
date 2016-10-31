@@ -25,17 +25,14 @@ public class SchedulerServiceImpl implements SchedulerService {
 	@Autowired
 	private JobDetail jobDetail;
 
-	@Override
 	public void schedule(String cronExpression) {
 		schedule(NULLSTRING, cronExpression);
 	}
 
-	@Override
 	public void schedule(String name, String cronExpression) {
 		schedule(name, NULLSTRING, cronExpression);
 	}
 
-	@Override
 	public void schedule(String name, String group, String cronExpression) {
 		try {
 			schedule(name, group, new CronExpression(cronExpression));
@@ -44,17 +41,14 @@ public class SchedulerServiceImpl implements SchedulerService {
 		}
 	}
 
-	@Override
 	public void schedule(CronExpression cronExpression) {
 		schedule(NULLSTRING, cronExpression);
 	}
 
-	@Override
 	public void schedule(String name, CronExpression cronExpression) {
 		schedule(name, NULLSTRING, cronExpression);
 	}
 
-	@Override
 	public void schedule(String name, String group, CronExpression cronExpression) {
 
 		if (isValidExpression(cronExpression)) {
@@ -84,92 +78,89 @@ public class SchedulerServiceImpl implements SchedulerService {
 		}
 	}
 
-	@Override
 	public void schedule(Date startTime) {
 		schedule(startTime, NULLDATE);
 	}
 
-	@Override
 	public void schedule(Date startTime, String group) {
 		schedule(startTime, NULLDATE, group);
 	}
 
-	@Override
 	public void schedule(String name, Date startTime) {
 		schedule(name, startTime, NULLDATE);
 	}
 
-	@Override
+	 
 	public void schedule(String name, Date startTime, String group) {
 		schedule(name, startTime, NULLDATE, group);
 	}
 
-	@Override
+	 
 	public void schedule(Date startTime, Date endTime) {
 		schedule(startTime, endTime, 0);
 	}
 
-	@Override
+	 
 	public void schedule(Date startTime, Date endTime, String group) {
 		schedule(startTime, endTime, 0, group);
 	}
 
-	@Override
+	 
 	public void schedule(String name, Date startTime, Date endTime) {
 		schedule(name, startTime, endTime, 0);
 	}
 
-	@Override
+	 
 	public void schedule(String name, Date startTime, Date endTime, String group) {
 		schedule(name, startTime, endTime, 0, group);
 	}
 
-	@Override
+	 
 	public void schedule(Date startTime, int repeatCount) {
 		schedule(null, startTime, NULLDATE, 0);
 	}
 
-	@Override
+	 
 	public void schedule(Date startTime, Date endTime, int repeatCount) {
 		schedule(null, startTime, endTime, 0);
 	}
 
-	@Override
+	 
 	public void schedule(Date startTime, Date endTime, int repeatCount, String group) {
 		schedule(null, startTime, endTime, 0, group);
 	}
 
-	@Override
+	 
 	public void schedule(String name, Date startTime, Date endTime, int repeatCount) {
 		schedule(name, startTime, endTime, 0, 0L);
 	}
 
-	@Override
+	 
 	public void schedule(String name, Date startTime, Date endTime, int repeatCount, String group) {
 		schedule(name, startTime, endTime, 0, 0L, group);
 	}
 
-	@Override
+	 
 	public void schedule(Date startTime, int repeatCount, long repeatInterval) {
 		schedule(null, startTime, NULLDATE, repeatCount, repeatInterval);
 	}
 
-	@Override
+	 
 	public void schedule(Date startTime, Date endTime, int repeatCount, long repeatInterval) {
 		schedule(null, startTime, endTime, repeatCount, repeatInterval);
 	}
 
-	@Override
+	 
 	public void schedule(Date startTime, Date endTime, int repeatCount, long repeatInterval, String group) {
 		schedule(null, startTime, endTime, repeatCount, repeatInterval, group);
 	}
 
-	@Override
+	 
 	public void schedule(String name, Date startTime, Date endTime, int repeatCount, long repeatInterval) {
 		schedule(name, startTime, endTime, repeatCount, repeatInterval, NULLSTRING);
 	}
 
-	@Override
+	 
 	public void schedule(String name, Date startTime, Date endTime, int repeatCount, long repeatInterval, String group) {
 
 		if (this.isValidExpression(startTime)) {
@@ -202,12 +193,12 @@ public class SchedulerServiceImpl implements SchedulerService {
 		}
 	}
 
-	@Override
+	 
 	public void pauseTrigger(String triggerName) {
 		pauseTrigger(triggerName, NULLSTRING);
 	}
 
-	@Override
+	 
 	public void pauseTrigger(String triggerName, String group) {
 		try {
 			scheduler.pauseTrigger(new TriggerKey(triggerName, group));// 停止触发器
@@ -216,12 +207,12 @@ public class SchedulerServiceImpl implements SchedulerService {
 		}
 	}
 
-	@Override
+	 
 	public void resumeTrigger(String triggerName) {
 		resumeTrigger(triggerName, NULLSTRING);
 	}
 
-	@Override
+	 
 	public void resumeTrigger(String triggerName, String group) {
 		try {
 			scheduler.resumeTrigger(new TriggerKey(triggerName, group));// 重启触发器
@@ -230,12 +221,12 @@ public class SchedulerServiceImpl implements SchedulerService {
 		}
 	}
 
-	@Override
+	 
 	public boolean removeTrigdger(String triggerName) {
 		return removeTrigdger(triggerName, NULLSTRING);
 	}
 
-	@Override
+	 
 	public boolean removeTrigdger(String triggerName, String group) {
 		TriggerKey triggerKey = new TriggerKey(triggerName, group);
 		try {
