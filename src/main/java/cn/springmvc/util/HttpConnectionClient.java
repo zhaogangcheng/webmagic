@@ -355,7 +355,7 @@ public class HttpConnectionClient {
 		HttpClient client = getHttpClient();
 		// 设置编码
 		client.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET,
-				codeing);
+				codeing); 
 		PostMethod post = null;
 		try {
 			// 设置提交地址
