@@ -392,7 +392,7 @@ public class HttpConnectionClient {
 			post.getParams().setParameter("Content-Type","application/x-www-form-urlencoded");
 			post.getParams().setParameter("Origin","http://travel.ceair.com");
 			post.getParams().setParameter("Referer","http://travel.ceair.com/");
-			post.addRequestHeader(header);
+			post.addRequestHeader(header); 
 			post.setRequestBody(nvps);
 			
 			int statusCode = client.executeMethod(post);
