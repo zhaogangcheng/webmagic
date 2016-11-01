@@ -43,11 +43,7 @@ public class Login {
 		String url = "http://travel.ceair.com/log_f.do";
 		String j_username = "hnkt";
 		String j_password = "e10adc3949ba59abbe56e057f20f883e";
-<<<<<<< HEAD
 		String kaptcha = "1234";
-=======
-		String kaptcha = "1234"; 
->>>>>>> 6d1c8746e54d013f6aa7a28aa8ccf87cc715b88d
 		NameValuePair[] nvps = {new NameValuePair("j_username", j_username),new NameValuePair("j_password", j_password),new NameValuePair("kaptcha", kaptcha) };
 		String loginCookie= httpClient.getContextByPostMethodLogin(url,nvps,imgcookie);
 		System.out.println("loginCookie:"+loginCookie);
