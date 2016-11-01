@@ -357,7 +357,7 @@ public class HttpConnectionClient {
 		client.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET,
 				codeing); 
 		PostMethod post = null;
-		try { 
+		try {
 			// 设置提交地址
 			URL u = new URL(url);
 			client.getHostConfiguration().setHost(u.getHost(),
