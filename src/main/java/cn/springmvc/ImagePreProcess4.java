@@ -280,7 +280,7 @@ public class ImagePreProcess4 {
         return result;  
     }  
   
-    public static String getAllOcr(String file) throws Exception {  
+    public static String getAllOcr(String file) throws Exception {   
         BufferedImage img = removeBackgroud(file);  
         List<BufferedImage> listImg = splitImage(img);  
         Map<BufferedImage, String> map = loadTrainData();  

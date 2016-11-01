@@ -213,7 +213,7 @@ public class ImagePreProcess3 {
     public static void main(String[] args) throws Exception {  
         //trainData();  
         // downloadImage();  
-        for (int i = 0; i < 5; ++i) {  
+        for (int i = 0; i < 5; ++i) {   
             String text = getAllOcr("D:\\yzm\\yzm" + i + ".jpg");  
             System.out.println(i + ".jpg = " + text);  
         }  

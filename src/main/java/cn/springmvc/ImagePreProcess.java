@@ -106,7 +106,7 @@ public class ImagePreProcess {
         List<BufferedImage> listImg = splitImage(img);  
         Map<BufferedImage, String> map = loadTrainData();  
         String result = "";  
-        for (BufferedImage bi : listImg) {  
+        for (BufferedImage bi : listImg) {   
             result += getSingleCharOcr(bi, map);  
         }  
         ImageIO.write(img, "JPG", new File("D:\\yzm\\"+result+".jpg"));  
