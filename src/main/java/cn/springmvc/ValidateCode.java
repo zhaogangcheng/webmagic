@@ -193,7 +193,20 @@ public class ValidateCode {
     
 	
 	public static void main(String[] args) throws Exception {
-			System.out.println(OcrImage(new FileInputStream(new File("D:\\yzm\\yzm.jpg"))));;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			//System.setProperty("jna.library.path", "32".equals(System.getProperty("sun.arch.data.model")) ? "lib/win32-x86" : "lib/win32-x86-64");
+			System.out.println(OcrImage(new FileInputStream(new File("D:\\yzm\\yzm1.jpg"))));;
 /*			HttpClient httpClient = new DefaultHttpClient();
             String url = "http://travel.ceair.com/validateCode.vld?12";
             HttpGet getMethod = new HttpGet(url);
