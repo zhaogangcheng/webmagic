@@ -366,39 +366,25 @@ public class HttpConnectionClient {
 			post = new PostMethod(url);
 			// 提交数据
 			post.addParameters(nvps);
-			
-			//Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-			/*Accept-Encoding:gzip, deflate
-			Accept-Language:zh-CN,zh;q=0.8
-			Cache-Control:max-age=0
-			Connection:keep-alive
-			Content-Length:72
-			Content-Type:application/x-www-form-urlencoded
-			Cookie:CNZZDATA1000327295=1904323841-1477879351-%7C1477982590; uid=112; JSESSIONID=54A1C94EE13D505784C057D0D2990831.t1
-			Host:travel.ceair.com
-			Origin:http://travel.ceair.com
-			Referer:http://travel.ceair.com/
-			User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36*/
-			
 			Header header =  new Header("Cookie",cookie);
 			//post.getParams().setParameter("Cookie","JSESSIONID=6A49D7F1094C0E0FFC3C9FAC8056A474.t9; __COOKIE_SSO_KEY=SK_25927_3JYiZMtSx5Y0vuu9lokFgJyQTnzMUSMh; uid=112");
 			post.getParams().setParameter(HttpMethodParams.USER_AGENT,"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36");
-			post.getParams().setParameter("X-Requested-With", "XMLHttpRequest");
+			//post.getParams().setParameter("X-Requested-With", "XMLHttpRequest");
 			post.getParams().setParameter("Content-Type","application/x-www-form-urlencoded; charset=UTF-8"); 
 			//post.getParams().setParameter("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36");
 			post.getParams().setParameter("Accept","text/html, */*; q=0.01");
 			post.getParams().setParameter("Accept-Language","zh-CN,zh;q=0.8");
 			post.getParams().setParameter("Connection","keep-alive");
 			post.getParams().setParameter("Content-Type","application/x-www-form-urlencoded");
-			post.getParams().setParameter("Origin","http://travel.ceair.com");
-			post.getParams().setParameter("Referer","http://travel.ceair.com/");
+			//post.getParams().setParameter("Origin","http://travel.ceair.com");
+			post.getParams().setParameter("Referer","http://travel.ceair.com/log_f.do");
 			post.addRequestHeader(header); 
 			post.setRequestBody(nvps);
 			
 			int statusCode = client.executeMethod(post);
-			//String result = post.getResponseBodyAsString();
+			String resultBody = post.getResponseBodyAsString();
 			String result ="";
-			Cookie[] cookies = httpClient.getState().getCookies();
+			Cookie[] cookies = client.getState().getCookies();
 			if(cookies!=null&&cookies.length==1){
 				result = cookies[0].toExternalForm();
              }else if(cookies!=null&&cookies.length==2){
