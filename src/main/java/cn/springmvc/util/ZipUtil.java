@@ -20,6 +20,24 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 
 public class ZipUtil {
+	
+	
+	public static void deleteFile(String filePath, String fileName){
+		File file = new File(filePath);
+		if(file.exists()){
+			File[] files = file.listFiles();
+			for(int i=0;i<files.length;i++){
+				if(files[i].isFile()){
+					if(files[i].getName().equals(fileName)){
+						files[i].delete();
+						return;
+					}
+				}
+				
+			}
+		}
+		
+	}
 
 	/**
 	 * 递归压缩文件夹
