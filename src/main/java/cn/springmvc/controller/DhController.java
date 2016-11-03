@@ -1,5 +1,6 @@
 package cn.springmvc.controller;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.springmvc.util.ExportExcel;
 import cn.springmvc.util.HttpConnectionClient;
 import cn.springmvc.util.PropertiesUtil;
+import cn.springmvc.util.ZipUtil;
 import cn.springmvc.vo.DhQueryVo;
 import cn.springmvc.vo.DiscountFlightInfoVo;
 import cn.springmvc.vo.ExcelVo;
@@ -131,9 +133,26 @@ public class DhController {
 		OutputStream os = null;
 		try {
 			os = response.getOutputStream();
+			String filePath = "D:\\excel\\";
+			OutputStream out = new FileOutputStream(filePath+filename);
 		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
 			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
-	        ex.exportExcel(headers, allList, os);
+	        ex.exportExcel(headers, allList, out);
+	        String zipPath = filePath;
+	        String dir = zipPath+filename;
+	        String zipFileName = "easternAirlines.zip";
+	        
+	        try{
+	        	//生产解压缩文件
+	        	ZipUtil.zip(dir, zipPath, zipFileName);
+	        	//删除excel文件
+	        	ZipUtil.deleteFile(filePath,filename);
+	        	
+	        }catch(Exception e){
+	        	e.printStackTrace();
+	        }
+	        ZipUtil.downZip(response, zipPath+zipFileName, zipFileName);
+	        
 	        //JOptionPane.showMessageDialog(null, "导出成功!");  
             System.out.println("excel导出成功！");  
 			
