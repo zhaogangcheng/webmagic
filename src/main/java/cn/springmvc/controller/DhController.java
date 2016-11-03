@@ -47,6 +47,132 @@ public class DhController {
 	//List<ExcelVo> resultListss=  new LinkedList<ExcelVo>();
 	Map<String,String> codeMap =  HBMap.getMap();
 	
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/autoDownload",method={RequestMethod.POST })
+	public Map<String, Object> autoDownload(HttpServletRequest request,  HttpServletResponse response,HQQueryVo vo){
+		
+		if (vo == null){
+			return null;
+		}
+		
+		long timeOne=System.currentTimeMillis();
+		
+		String jsessionid = vo.getJsessionid();
+		Date endTime  = vo.getEndtime();
+		Date startTime  = vo.getStarttime();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String endDate = format.format(endTime);
+		String startDate = format.format(startTime);
+		
+		SimpleDateFormat format1 = new SimpleDateFormat("MM.dd");
+		String resultendDate = format1.format(endTime);
+		String resultstartDate = format1.format(startTime);
+		StringBuffer resultFilname = new StringBuffer();
+		resultFilname.append(resultstartDate+"-"+resultendDate);
+		String resultarrive = vo.getArrive();
+		String[] resultarrives = resultarrive.split("/");
+		if(resultarrives!=null&&resultarrives.length==1){
+			resultFilname.append("_"+resultarrive);
+		}else if(resultarrives!=null&&resultarrives.length>1){
+			resultFilname.append("_"+resultarrive.replaceAll("/", "_"));
+		}
+		
+		
+		//获取天数
+		List<String> listDays = getListDay(stringToCalendar(startDate),stringToCalendar(endDate));
+		
+		//获取出发抵达的组合数据
+		String from = vo.getFrom();
+		String arrive = vo.getArrive();
+		List<HQQueryVo> zuheList = getzuhe(from,arrive);
+		
+		List<ExcelVo> allList = new LinkedList<ExcelVo>();
+		for(HQQueryVo zh : zuheList){
+			for(String flyDate : listDays){
+				//httpclient请求数据
+				List<ExcelVo> resultExcelList = getDomMsg(zh.getFrom(),zh.getArrive(),flyDate,jsessionid);
+				allList.addAll(resultExcelList);
+			    Thread thread = Thread.currentThread();
+			    try {
+					thread.sleep(1500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}//暂停1.5秒后程序继续执行
+			}
+		}
+		
+		//将list中重复的数据重新组装
+		allList = getonlyList(allList);
+		
+		//去掉list www的
+		allList = distinctAllList(allList);
+		
+		//时间组装成2016-09-09~2016-09-09
+		allList = riqichongfu(allList);
+		
+		
+		
+		/****
+		 *  下载测试
+		 */
+		
+		response.setContentType("application/x-excel");  
+		response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+		String filename = "easternAirlines.xls";
+	    Object resfileName = request.getSession().getAttribute("resultFilname");
+	    if(resfileName!=null){
+	    	filename = resfileName.toString()+".xls";
+	    }
+		response.setHeader("Content-disposition", "attachment; filename="
+				+ filename);
+		response.setCharacterEncoding("utf-8");
+		OutputStream os = null;
+		try {
+			os = response.getOutputStream();
+		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
+			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
+	        ex.exportExcel(headers, allList, os);
+	        //JOptionPane.showMessageDialog(null, "导出成功!");  
+            System.out.println("excel导出成功！");  
+			
+		} catch (IOException e) {
+			System.out.println("获取流失败");
+			e.printStackTrace();
+		}finally {
+			try{
+				if (os != null) {  
+					os.close();  
+				} 
+			}catch(IOException e){
+				System.out.println("获取流失败");
+				e.printStackTrace();
+			}
+			
+		}
+		
+		System.out.println("=====downloads======"+	allList.size());
+		/****
+		 *  下载测试
+		 */
+		
+		Map<String,Object> map = new HashMap<String,Object>();  
+	    map.put("result", "200");
+	    map.put("jsessionid", vo.getJsessionid());
+	    map.put("data", allList);
+	    request.getSession().setAttribute("resultListss", allList);
+	    request.getSession().setAttribute("resultFilname", resultFilname);
+		long timeTwo=System.currentTimeMillis();
+		//System.out.println("相隔"+(timeTwo-timeOne)+"秒");
+		long minute=(timeTwo-timeOne)/(1000);//转化minute
+		System.out.println("相隔"+minute+"秒");
+		map.put("timer", minute);
+	    return map;
+	}
+	
+	
+	
 	@ResponseBody
 	@RequestMapping(value="/downloads",method={RequestMethod.GET })
 	public void downloads(HttpServletRequest request,  HttpServletResponse response){
@@ -157,19 +283,6 @@ public class DhController {
 		//时间组装成2016-09-09~2016-09-09
 		allList = riqichongfu(allList);
 		
-		
-		//hanglu排序
-	/*	Collections.sort(allList,new Comparator<ExcelVo>() {
-            public int compare(ExcelVo arg0, ExcelVo arg1) {
-                return arg1.getHangban().compareTo(arg0.getHangban());
-                //return Collator.getInstance(Locale.CHINESE).compare(arg0.getHangban().substring(0,3),arg1.getHangban().substring(0,3));
-            }
-				}
-            );*/
-		
-		// Collections.reverse(allList);
-		
-		//List<ExcelVo> resultExcelList = getDomMsg(from,arrive,endDate,vo.getJsessionid());
 		
 		Map<String,Object> map = new HashMap<String,Object>();  
 	    map.put("result", "200");
