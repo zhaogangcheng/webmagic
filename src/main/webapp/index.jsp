@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- //For-Mobile-Apps-and-Meta-Tags -->
 	
 <script>
-  $(document).ready(function() { 
+  $(document).ready(function() {  
     $("#datepickerstart").datepicker();
     $("#datepickerend").datepicker();
   });
