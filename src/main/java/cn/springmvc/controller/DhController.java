@@ -146,7 +146,7 @@ public class DhController {
 	        	//生产解压缩文件
 	        	ZipUtil.zip(dir, zipPath, zipFileName);
 	        	//删除excel文件
-	        	ZipUtil.deleteFile(filePath,filename);
+	        	ZipUtil.deleteFile(filePath,filename); 
 	        	
 	        }catch(Exception e){
 	        	e.printStackTrace();
