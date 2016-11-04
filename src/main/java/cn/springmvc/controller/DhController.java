@@ -135,7 +135,7 @@ public class DhController {
 		//如果文件夹不存在则创建    
 		if  (!iscunzai.exists()  && !iscunzai.isDirectory())      
 		{       
-		    iscunzai.mkdir();
+		    iscunzai.mkdir(); 
 		}
 		try {
 			os = response.getOutputStream();
