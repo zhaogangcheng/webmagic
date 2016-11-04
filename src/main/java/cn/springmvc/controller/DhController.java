@@ -1,5 +1,6 @@
 package cn.springmvc.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -122,31 +123,35 @@ public class DhController {
 		
 		response.setContentType("application/x-excel");  
 		response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-		String filename = "easternAirlines.xls";
-	    Object resfileName = request.getSession().getAttribute("resultFilname");
-	    if(resfileName!=null){
-	    	filename = resfileName.toString()+".xls";
-	    }
+/*		String filename = "easternAirlines.xls";
+		resultFilname*/
 		response.setHeader("Content-disposition", "attachment; filename="
-				+ filename);
+				+ resultFilname+".xls");
 		response.setCharacterEncoding("utf-8");
 		OutputStream os = null;
+		String directory = "excel"+ZipUtil.getRandomString(4);
+		String filePath = "D:\\dhDownload\\"+directory +"\\";
+		File iscunzai = new File(filePath);
+		//如果文件夹不存在则创建    
+		if  (!iscunzai.exists()  && !iscunzai.isDirectory())      
+		{       
+		    iscunzai.mkdir(); 
+		}
 		try {
 			os = response.getOutputStream();
-			String filePath = "D:\\excel\\";
-			OutputStream out = new FileOutputStream(filePath+filename);
+		
+			OutputStream out = new FileOutputStream(filePath+resultFilname+".xls");
 		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
 			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
 	        ex.exportExcel(headers, allList, out);
-	        String zipPath = filePath;
-	        String dir = zipPath+filename;
-	        String zipFileName = "easternAirlines.zip";
+	        String zipPath = "D:\\dhDownload\\zip\\";
+	        String dir = zipPath+resultFilname+".xls";
+	        String zipFileName = resultFilname+".zip";
 	        
 	        try{
 	        	//生产解压缩文件
-	        	ZipUtil.zip(dir, zipPath, zipFileName);
-	        	//删除excel文件
-	        	ZipUtil.deleteFile(filePath,filename); 
+	        	ZipUtil.zip(filePath, zipPath, zipFileName);
+	        	
 	        	
 	        }catch(Exception e){
 	        	e.printStackTrace();
@@ -171,6 +176,9 @@ public class DhController {
 			
 		}
 		
+		//删除excel文件
+    	ZipUtil.deleteFiles(filePath); 
+		
 		System.out.println("=====downloads======"+	allList.size());
 		/****
 		 *  下载测试
@@ -180,8 +188,8 @@ public class DhController {
 	    map.put("result", "200");
 	    map.put("jsessionid", vo.getJsessionid());
 	    map.put("data", allList);
-	    request.getSession().setAttribute("resultListss", allList);
-	    request.getSession().setAttribute("resultFilname", resultFilname);
+	/*    request.getSession().setAttribute("resultListss", allList);
+	    request.getSession().setAttribute("resultFilname", resultFilname);*/
 		long timeTwo=System.currentTimeMillis();
 		//System.out.println("相隔"+(timeTwo-timeOne)+"秒");
 		long minute=(timeTwo-timeOne)/(1000);//转化minute
