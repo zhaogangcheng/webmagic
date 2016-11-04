@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Random;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedOutputStream;
 import java.util.zip.ZipEntry;
@@ -22,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 public class ZipUtil {
 	
 	
+	//删除单个文件
 	public static void deleteFile(String filePath, String fileName){
 		File file = new File(filePath);
 		if(file.exists()){
@@ -38,6 +40,32 @@ public class ZipUtil {
 		}
 		
 	}
+	
+	//删除目录filePath所有文件
+	public static void deleteFiles(String filePath){
+		File file = new File(filePath);
+		if(file.exists()){
+			File[] files = file.listFiles();
+			for(int i=0;i<files.length;i++){
+				if(files[i].isFile()){
+					files[i].delete();
+				}
+			}
+		}
+		
+	}
+	
+	
+	public static String getRandomString(int length) { //length表示生成字符串的长度  
+	    String base = "abcdefghijklmnopqrstuvwxyz0123456789";     
+	    Random random = new Random();     
+	    StringBuffer sb = new StringBuffer();     
+	    for (int i = 0; i < length; i++) {     
+	        int number = random.nextInt(base.length());     
+	        sb.append(base.charAt(number));     
+	    }     
+	    return sb.toString();     
+	 }  
 
 	/**
 	 * 递归压缩文件夹
