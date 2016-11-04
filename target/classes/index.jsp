@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- //For-Mobile-Apps-and-Meta-Tags -->
 	
 <script>
-  $(document).ready(function() {
+  $(document).ready(function() {  
     $("#datepickerstart").datepicker();
     $("#datepickerend").datepicker();
   });
@@ -41,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<h3>Check Flight</h3>
 		<div style="position: relative;left: 45%;margin-bottom: 15px;"> <a style="color:red" target="_blank" href="properties.jsp">航班屏蔽配置</a> </div>
 			<div class="register agileits">
-				<form action="./dh/posthq" id="myformid" method="post">
+				<form action="./dh/posthq" id="myformid" name="myformid" method="post">
 					<input type="text" id="startplace" class="location" name="from" placeholder="出发城市:SHA/PEK/CAN" required="">
 					<input type="text" id="endplace"  class="location" name="arrive" placeholder="到达城市:LAX/SIN/ICN/DAC" required="">
 					<input type="datetime" id="datepickerstart" class="email" name="starttime" placeholder="出发日期（起）" required="">
@@ -52,6 +52,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<form action="./dh/downloads" id="downloads" method="get">
 					<input type="button"  value="DownLoad"  onclick="downloads()">
 				</form>
+				
+				<input type="button"  value="查询+自动下载"  onclick="autodownloads()">
 			</div>
 		</div>
 		
@@ -137,6 +139,48 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function downloads(){
 		$("#downloads").submit();
 		
+	}
+	
+	function autodownloads(){
+		var startplace = $("#startplace").val();
+		if(!startplace){
+			alert("请填写出发地代码");
+			return;
+		}
+		var endplace = $("#endplace").val();
+		if(!endplace){
+			alert("请填写目的地代码");
+			return;
+		}
+		
+		var datepickerstart = $("#datepickerstart").val();
+		if(!datepickerstart){
+			alert("请填写最早出发时间");
+			return;
+		}
+		
+		var datepickerend = $("#datepickerend").val();
+		if(!datepickerend){
+			alert("请填写最晚出发时间");
+			return;
+		}
+		
+		var jsid = $("#jsid").val();
+		if(!jsid){
+			alert("请填写用户Jsessionid");
+			return;
+		}
+		
+		$.fn.jqLoading({ height: 100, width: 400, text: "此次查询成功之后自动下载，请耐心等候！" });
+		
+		
+		setInterval(function(){$.fn.jqLoading("destroy");},5000)
+		
+		var data={"from":startplace,"arrive":endplace,"starttime":datepickerstart,"endtime":datepickerend,"jsessionid":jsid};  
+		document.myformid.action = "./dh/autoDownload";
+		document.myformid.submit();
+		
+	
 	}
 
   
