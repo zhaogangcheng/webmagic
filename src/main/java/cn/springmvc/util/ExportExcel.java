@@ -267,7 +267,17 @@ public class ExportExcel<T> {
 	        catch (IOException e)  
 	        {  
 	            e.printStackTrace();  
-	        }  
+	        }    finally  
+            {  
+                // 清理资源  
+            
+					try {
+					  if(out!=null)
+						out.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+            }  
 	    }
 	    
 	    

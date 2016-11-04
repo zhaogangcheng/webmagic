@@ -116,7 +116,7 @@ public class MainController {
 			for (int j = 0; j < tdLength; j++) {
 				// 得到Excel工作表指定行的单元格
 				Cell cell1 = row1.getCell(j);
-				*//**
+				*//**  
 				 * 为了处理：Excel异常Cannot get a text value from a numeric cell
 				 * 将所有列中的内容都设置成String类型格式
 				 *//*
