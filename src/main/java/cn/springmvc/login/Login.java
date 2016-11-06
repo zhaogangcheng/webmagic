@@ -1,6 +1,5 @@
 package cn.springmvc.login;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,9 +7,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.Header;
@@ -21,20 +17,13 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.BasicHttpContext;
 
 import cn.springmvc.ValidateCode;
-import cn.springmvc.controller.DhController;
-import cn.springmvc.vo.ExcelVo;
 
 public class Login {
 	
 	
-	public static void main(String strings[]) throws Exception   
+	public static String getLoginJessionId() throws Exception   
     {  
 		
 		 HttpClient httpClient = new HttpClient();
@@ -56,14 +45,14 @@ public class Login {
 		
 		if("error".equals(cookie781)){
 			System.out.println("验证码错误");
-			return;
+			
 		}
+		return cookie781;
 		
-		
-		DhController dh = new DhController();
+	/*	DhController dh = new DhController();
 		List<ExcelVo> ls = dh.getDomMsg("SIN", "PEK", "2016-12-12", cookie781);
 		String ss = "";
-		String sdsds= "";
+		String sdsds= "";*/
 		
     }
 	

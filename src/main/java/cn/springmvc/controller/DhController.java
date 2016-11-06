@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.springmvc.login.Login;
 import cn.springmvc.util.ExportExcel;
 import cn.springmvc.util.HttpConnectionClient;
 import cn.springmvc.util.PropertiesUtil;
@@ -49,6 +50,22 @@ public class DhController {
 	
 	//List<ExcelVo> resultListss=  new LinkedList<ExcelVo>();
 	Map<String,String> codeMap =  HBMap.getMap();
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/login",method={RequestMethod.GET })
+	public Map<String, Object> login(HttpServletRequest request,  HttpServletResponse response){
+		Map<String,Object> map = new HashMap<String,Object>();  
+		String jsessionid = "";
+		try {
+			jsessionid = Login.getLoginJessionId();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("jsessionid", jsessionid);
+		map.put("code", "200");
+	    return map;
+	}
 	
 	
 	

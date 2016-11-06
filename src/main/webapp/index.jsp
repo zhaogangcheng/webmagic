@@ -39,6 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 		<div class="left w3l">
 		<h3>Check Flight</h3>
+		<div style="position: relative;left: 44%;margin-bottom: 15px;"> <a style="color:yellow;cursor:pointer" id="logina" onclick="login()"  >自动登录(未登录)</a></div>
 		<div style="position: relative;left: 45%;margin-bottom: 15px;"> <a style="color:red" target="_blank" href="properties.jsp">航班屏蔽配置</a> </div>
 			<div class="register agileits">
 				<form action="./dh/posthq" id="myformid" name="myformid" method="post">
@@ -70,6 +71,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </body>
 
 <script>
+	
+	function login(){
+		$.ajax({
+            type: "get",
+            url: "./dh/login",
+           // data: data,
+            dataType: 'json',
+            beforeSend:function () {
+                $.fn.jqLoading({ height: 100, width: 240, text: "正在登录，请耐心等待...." });
+            },
+            complete:function(){
+            	  $.fn.jqLoading("destroy");
+            },
+            success: function(result) {
+            	if(result.code ='200'&&result.jsessionid!='error'){
+            		$("#logina").css("color","red")
+            		$("#logina").html("自动登录(已登录)");
+            		$("#jsid").val(result.jsessionid);
+            	}else{
+            		$("#logina").css("color","yellow")
+            		$("#logina").html("自动登录(验证码错误！)");
+            		$("#jsid").val(""); 
+            	}
+            }
+        });
+	}
+		
+
 	function submitbtn(){
 		var startplace = $("#startplace").val();
 		if(!startplace){
