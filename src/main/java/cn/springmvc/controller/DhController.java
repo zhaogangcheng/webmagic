@@ -60,7 +60,7 @@ public class DhController {
 		try {
 			jsessionid = Login.getLoginJessionId();
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 		map.put("jsessionid", jsessionid);
 		map.put("code", "200");
