@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -135,6 +137,29 @@ public class ValidateCode {
 		}else{
 			return false;
 		}
+		
+		
+		//方法二
+		/*boolean result = false;
+		int r = (colorInt >> 16) & 0xff;
+		int g = (colorInt >> 8) & 0xff;
+		int b = (colorInt) & 0xff;
+		
+		int tmp = r*r+g*g+b*b;
+		if(tmp> 3*128*128){
+			result = true;
+		}
+		
+		return result;*/
+		
+		//方法三
+		
+	/*	Color color = new Color(colorInt);
+		if(color.getRed()+color.getGreen()+color.getBlue()<=50){
+			return true;
+		}else{
+			return false;
+		}*/
 	}
 	
 	
@@ -167,19 +192,140 @@ public class ValidateCode {
                     image.setRGB(x, y, Color.WHITE.getRGB());  
                 }
             }  
-        }  
+        }
         return image;  
      }
+    
+    
+    /***
+     * ====================================测试======================================
+     * ***/ 
+    
+    public static BufferedImage removeBackgroud1( BufferedImage img )  
+            throws Exception {  
+        //BufferedImage img = ImageIO.read(new File(picFile));  
+        img = img.getSubimage(1, 1, img.getWidth() - 2, img.getHeight() - 2);  
+        int width = img.getWidth();  
+        int height = img.getHeight();  
+        double subWidth = (double) width / 2.0;  
+        for (int i = 0; i < 4; i++) {  
+            Map<Integer, Integer> map = new HashMap<Integer, Integer>();  
+            for (int x = (int) (1 + i * subWidth); x < (i + 1) * subWidth  
+                    && x < width - 1; ++x) {  
+                for (int y = 0; y < height; ++y) {  
+                    if (isWhite1(img.getRGB(x, y)) == 1)  
+                        continue;  
+                    if (map.containsKey(img.getRGB(x, y))) {  
+                        map.put(img.getRGB(x, y), map.get(img.getRGB(x, y)) + 1);  
+                    } else {  
+                        map.put(img.getRGB(x, y), 1);  
+                    }  
+                }  
+            }  
+            int max = 0;  
+            int colorMax = 0;  
+            for (Integer color : map.keySet()) {  
+                if (max < map.get(color)) {  
+                    max = map.get(color);  
+                    colorMax = color;  
+                }  
+            }  
+            for (int x = (int) (1 + i * subWidth); x < (i + 1) * subWidth  
+                    && x < width - 1; ++x) {  
+                for (int y = 0; y < height; ++y) {  
+                    if (img.getRGB(x, y) == colorMax) {  
+                        img.setRGB(x, y, Color.WHITE.getRGB());  
+                    } else {  
+                        img.setRGB(x, y, Color.BLACK.getRGB());  
+                    }  
+                }  
+            }  
+        }
+        
+        return img;  
+    } 
+    
+    
+    public static int isWhite1(int colorInt) {  
+        Color color = new Color(colorInt);  
+        if (color.getRed() + color.getGreen() + color.getBlue() >650) {  
+            return 1;  
+        }  
+        return 0;  
+    } 
+    
+    
+    public static int isBlack(int colorInt) {  
+        Color color = new Color(colorInt);  
+        if (color.getRed() + color.getGreen() + color.getBlue() <= 300) {  
+            return 1;  
+        }  
+        return 0;  
+    }  
+
+    public static int getColorBright(int colorInt) {  
+        Color color = new Color(colorInt);  
+        return color.getRed() + color.getGreen() + color.getBlue();  
+  
+    }  
+  
+    public static int isBlackOrWhite(int colorInt) {  
+        if (getColorBright(colorInt) < 100 || getColorBright(colorInt) > 300) {  
+            return 1;  
+        }  
+        return 0;  
+    }  
+  
+    public static BufferedImage removeBackgroud(BufferedImage img)  
+            throws Exception {  
+       // BufferedImage img = ImageIO.read(new File(picFile));  
+        int width = img.getWidth();  
+        int height = img.getHeight();  
+        for (int x = 1; x < width - 1; ++x) {  
+            for (int y = 1; y < height - 1; ++y) {  
+                if (getColorBright(img.getRGB(x, y)) < 300) {  
+                    if (isBlackOrWhite(img.getRGB(x - 1, y))  
+                            + isBlackOrWhite(img.getRGB(x + 1, y))  
+                            + isBlackOrWhite(img.getRGB(x, y - 1))  
+                            + isBlackOrWhite(img.getRGB(x, y + 1)) == 4) {  
+                        img.setRGB(x, y, Color.WHITE.getRGB());  
+                    }  
+                }  
+            }  
+        }  
+       /* for (int x = 1; x < width - 1; ++x) {  
+            for (int y = 1; y < height - 1; ++y) {  
+                if (getColorBright(img.getRGB(x, y)) < 100) {  
+                    if (isBlackOrWhite(img.getRGB(x - 1, y))  
+                            + isBlackOrWhite(img.getRGB(x + 1, y))  
+                            + isBlackOrWhite(img.getRGB(x, y - 1))  
+                            + isBlackOrWhite(img.getRGB(x, y + 1)) == 4) {  
+                        img.setRGB(x, y, Color.WHITE.getRGB());  
+                    }  
+                }  
+            }  
+        }*/  
+        img = img.getSubimage(1, 1, img.getWidth() - 2, img.getHeight() - 2);  
+        return img;  
+    } 
+    
+    
+    
+    /***
+     * ====================================测试======================================
+     * ***/
+    
     
     public static String OcrImage(InputStream instream){
     	String result=null;
     	try {
     		BufferedImage read = ImageIO.read(instream);
-			read = removeInterference(read);
+			//read = removeInterference(read);
+    		read = removeBackgroud1(read);
 			read = grayImage(read);
 			read = erzhihuaImage(read);
 			Tesseract instance = new Tesseract(); // JNA Interface Mapping
-			instance.setTessVariable("tessedit_char_whitelist", "0123456789abcdefghijklmnopqrstuvwxyz");
+			instance.setTessVariable("tessedit_char_whitelist", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			File tessDataFolder = LoadLibs.extractTessResources("tessdata"); // Maven build only; only English data bundled
 			instance.setDatapath(tessDataFolder.getAbsolutePath());
 			result = instance.doOCR(read);
@@ -206,33 +352,34 @@ public class ValidateCode {
 		
 		
 			//System.setProperty("jna.library.path", "32".equals(System.getProperty("sun.arch.data.model")) ? "lib/win32-x86" : "lib/win32-x86-64");
-			System.out.println(OcrImage(new FileInputStream(new File("D:\\yzm\\yzm1.jpg"))));;
-/*			HttpClient httpClient = new DefaultHttpClient();
-            String url = "http://travel.ceair.com/validateCode.vld?12";
+			//System.out.println(OcrImage(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm1.jpg"))));;
+			HttpClient httpClient = new DefaultHttpClient();
+            String url = "http://travel.ceair.com/validateCode. ?12";
             HttpGet getMethod = new HttpGet(url);
             try {
                 HttpResponse response = httpClient.execute(getMethod, new BasicHttpContext());
                 HttpEntity entity = response.getEntity();
                 InputStream instream = entity.getContent(); 
-                OutputStream outstream = new FileOutputStream(new File("D:\\yzm\\yzm.jpg"));
+                OutputStream outstream = new FileOutputStream(new File("D:\\zhanghan\\yzm\\yzm.jpg"));
                 byte[] tmp = new byte[2048]; 
                 while ((instream.read(tmp)) != -1) {
                     outstream.write(tmp);
                 } 
                 
-                OcrImage(new FileInputStream(new File("D:\\yzm\\yzm.jpg")));*/
+                String result = OcrImage(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm.jpg")));
+                System.out.println("验证码:"+result);
                 //BufferedImage read = ImageIO.read(new ByteArrayInputStream(tmp));
                 
-        		//BufferedImage read = ImageIO.read(instream);
-        		//ImageIO.write(read, "jpg", new File("D:\\yzm\\yzm.jpg"));
-        		/*BufferedImage read2 = removeInterference(read);
+        		BufferedImage read = ImageIO.read(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm.jpg")));
+        		//ImageIO.write(read, "jpg", new File("D:\\zhanghan\\yzm\\yzm.jpg"));
+        		BufferedImage read2 = removeBackgroud1(read);
        		    read2 = grayImage(read2);
        		    read2 = erzhihuaImage(read2);
-       		    ImageIO.write(read2, "jpg", new File("D:\\yzm\\yzm.jpg"));*/
+       		    ImageIO.write(read2, "jpg", new File("D:\\zhanghan\\yzm\\yzm_chuli.jpg"));
         		
-          /*  } finally {
+            } finally {
                 getMethod.releaseConnection();
-            }*/
+            }
         
 	}
 }

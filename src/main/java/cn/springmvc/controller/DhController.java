@@ -130,7 +130,7 @@ public class DhController {
 		response.setCharacterEncoding("utf-8");
 		OutputStream os = null;
 		String directory = "excel"+ZipUtil.getRandomString(4);
-		String filePath = "D:\\dhDownload\\"+directory +"\\";
+		String filePath = "D:\\zhanghan\\dhDownload\\"+directory +"\\";
 		File iscunzai = new File(filePath);
 		//如果文件夹不存在则创建    
 		if  (!iscunzai.exists()  && !iscunzai.isDirectory())      
@@ -144,7 +144,7 @@ public class DhController {
 		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
 			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
 	        ex.exportExcel(headers, allList, out);
-	        String zipPath = "D:\\dhDownload\\zip\\";
+	        String zipPath = "D:\\zhanghan\\dhDownload\\zip\\";
 	        String dir = zipPath+resultFilname+".xls";
 	        String zipFileName = resultFilname+".zip";
 	        
