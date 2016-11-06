@@ -92,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	}else{
             		$("#logina").css("color","yellow")
             		$("#logina").html("自动登录(验证码错误！)");
-            		$("#jsid").val(""); 
+            		$("#jsid").val("");
             	}
             }
         });
