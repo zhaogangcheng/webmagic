@@ -76,7 +76,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$.ajax({
             type: "get",
             url: "./dh/login",
-           // data: data,
+           // data: data, 
             dataType: 'json',
             beforeSend:function () {
                 $.fn.jqLoading({ height: 100, width: 240, text: "正在登录，请耐心等待...." });
