@@ -1,10 +1,16 @@
 package cn.springmvc.login;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.Header;
@@ -15,14 +21,18 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
 
+import cn.springmvc.ValidateCode;
 import cn.springmvc.controller.DhController;
 import cn.springmvc.vo.ExcelVo;
 
 public class Login {
 	
-	  public static String img_path_url = "http://www.400gb.com/randcodeV2_login.php";
-	  public static String image_save_path = "D:\\yzm\\vcode.png";
 	
 	public static void main(String strings[]) throws Exception   
     {  
@@ -31,17 +41,23 @@ public class Login {
 		//获取图片下载 、同时获取图片的cookie
 		String imgcookie = downloadImage(httpClient);
 		
-		//利用图片的cookie去模拟登录
-		String loginSession = getLoginSession(httpClient,imgcookie);
-		
 		//识别验证码
-		identifyImg(); 
+		String kaptcha = identifyImg(); 
+		
+		//利用图片的cookie去模拟登录
+		String loginSession = getLoginSession(httpClient,imgcookie,kaptcha);
+		
 		
 		//利用登录的cookie去做home的操作 http://travel.ceair.com/home_f.do
 		String homeSession = getHomeSession(httpClient,loginSession);
 		
 		//现在获取 href="http://781.ceair.com/bookingmanage/booking_bookSearchInit.do
 		String cookie781 = get781Cookie(httpClient,homeSession);
+		
+		if("error".equals(cookie781)){
+			System.out.println("验证码错误");
+			return;
+		}
 		
 		
 		DhController dh = new DhController();
@@ -52,16 +68,22 @@ public class Login {
     }
 	
 	  public static String identifyImg(){
-		  
-		  return "";
+              
+            String result = "";
+			try {
+				result = ValidateCode.OcrImage(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm.jpg")));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+              System.out.println("验证码:"+result);
+              return result;
  	}
 	
-	public static String getLoginSession( HttpClient httpClient, String imgcookie) throws Exception{
+	public static String getLoginSession( HttpClient httpClient, String imgcookie,String kaptcha) throws Exception{
 		
 		String url = "http://travel.ceair.com/log_f.do";
 		String j_username = "hnkt";
 		String j_password = "e10adc3949ba59abbe56e057f20f883e";
-		String kaptcha = "1234";
 		NameValuePair[] nvps = {new NameValuePair("j_username", j_username),new NameValuePair("j_password", j_password),new NameValuePair("kaptcha", kaptcha) };
 		//String loginCookie= httpClient.getContextByPostMethodLogin(url,nvps,imgcookie);
 		// 设置编码
@@ -199,7 +221,7 @@ public static String getHomeSession( HttpClient httpClient, String loginsession)
 	                    System.out.println(" - " + cookies[i].toExternalForm());  
 	                }  
 	                */
-	                String picName = "D:\\yzm\\vcode.jpg";  
+	                String picName = "D:\\zhanghan\\yzm\\yzm.jpg";  
 	                InputStream inputStream = getMethod.getResponseBodyAsStream();  
 	                OutputStream outStream = new FileOutputStream(picName);  
 	                IOUtils.copy(inputStream, outStream);  
@@ -243,11 +265,16 @@ public static String getHomeSession( HttpClient httpClient, String loginsession)
 	                }  
 	                // 读取内容  
 	                Cookie[] cookies = httpClient.getState().getCookies();  
+	                
+	                if(cookies.length<5){
+	                	return "error";
+	                }
+	                
 	                if(cookies!=null&&cookies.length==1){
 	                	cookieResult = cookies[0].toExternalForm();
 	                }else if(cookies!=null&&cookies.length==2){
 	                	cookieResult = cookies[1].toExternalForm();
-	                }else if(cookies!=null&&cookies.length>2){
+	                }else if(cookies!=null&&cookies.length>=5){
 	                	cookieResult = cookies[4].toExternalForm();
 	                }else{
 	                	cookieResult = "JSESSIONID=";
