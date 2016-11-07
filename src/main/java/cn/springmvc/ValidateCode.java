@@ -328,6 +328,7 @@ public class ValidateCode {
 			instance.setTessVariable("tessedit_char_whitelist", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 			File tessDataFolder = LoadLibs.extractTessResources("tessdata"); // Maven build only; only English data bundled
 			instance.setDatapath(tessDataFolder.getAbsolutePath());
+			ImageIO.scanForPlugins();
 			result = instance.doOCR(read);
 			result = StringUtils.replace(StringUtils.trim(result), " ", "");
 		} catch (Exception e) {
@@ -354,7 +355,7 @@ public class ValidateCode {
 			//System.setProperty("jna.library.path", "32".equals(System.getProperty("sun.arch.data.model")) ? "lib/win32-x86" : "lib/win32-x86-64");
 			//System.out.println(OcrImage(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm1.jpg"))));;
 			HttpClient httpClient = new DefaultHttpClient();
-            String url = "http://travel.ceair.com/validateCode. ?12";
+            String url = "http://travel.ceair.com/validateCode.vld?29";
             HttpGet getMethod = new HttpGet(url);
             try {
                 HttpResponse response = httpClient.execute(getMethod, new BasicHttpContext());
