@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.springmvc.login.Login;
 import cn.springmvc.util.ExportExcel;
+import cn.springmvc.util.FourExcelZip;
 import cn.springmvc.util.HttpConnectionClient;
 import cn.springmvc.util.PropertiesUtil;
 import cn.springmvc.util.ZipUtil;
@@ -132,6 +133,9 @@ public class DhController {
 		//时间组装成2016-09-09~2016-09-09
 		allList = riqichongfu(allList);
 		
+		if(allList==null||allList.size()<=0){
+			return null;
+		}
 		
 		
 		/****
@@ -155,12 +159,43 @@ public class DhController {
 		    iscunzai.mkdir(); 
 		}
 		try {
+			
 			os = response.getOutputStream();
-		
+			//生成原来的xls
 			OutputStream out = new FileOutputStream(filePath+resultFilname+".xls");
 		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
 			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
 	        ex.exportExcel(headers, allList, out);
+	        
+	        /** ========生成qunaer开始========**/
+	        FourExcelZip.qunaerExcel(allList, filePath);
+	        
+	        
+	        /** ========生成qunaer结束========**/
+	        
+	        
+	        
+	        /** ========生成taobao开始========**/
+	        
+	        
+	        /** ========生成taobao结束========**/
+	        
+	        /** ========生成tongcheng开始========**/
+	        
+	        
+	        /** ========生成tongcheng结束========**/
+	        
+	        /** ========生成ctrip开始========**/
+	        
+	        
+	        /** ========生成ctrip结束========**/
+	        
+
+	        
+	 
+	        
+
+	        
 	        String zipPath = "D:\\zhanghan\\dhDownload\\zip\\";
 	        String dir = zipPath+resultFilname+".xls";
 	        String zipFileName = resultFilname+".zip";
