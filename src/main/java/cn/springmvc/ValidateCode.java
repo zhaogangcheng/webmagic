@@ -354,32 +354,32 @@ public class ValidateCode {
 		
 			//System.setProperty("jna.library.path", "32".equals(System.getProperty("sun.arch.data.model")) ? "lib/win32-x86" : "lib/win32-x86-64");
 			//System.out.println(OcrImage(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm1.jpg"))));;
-			HttpClient httpClient = new DefaultHttpClient();
-            String url = "http://travel.ceair.com/validateCode.vld?29";
-            HttpGet getMethod = new HttpGet(url);
-            try {
-                HttpResponse response = httpClient.execute(getMethod, new BasicHttpContext());
+			//HttpClient httpClient = new DefaultHttpClient();
+          /*  String url = "http://travel.ceair.com/validateCode.vld?29";
+            HttpGet getMethod = new HttpGet(url);*/
+          try {
+        	  /*      HttpResponse response = httpClient.execute(getMethod, new BasicHttpContext());
                 HttpEntity entity = response.getEntity();
-                InputStream instream = entity.getContent(); 
-                OutputStream outstream = new FileOutputStream(new File("D:\\zhanghan\\yzm\\yzm.jpg"));
+                InputStream instream = entity.getContent(); */
+         /*       OutputStream outstream = new FileOutputStream(new File("D:\\yzm\\yzm.jpg"));
                 byte[] tmp = new byte[2048]; 
                 while ((instream.read(tmp)) != -1) {
-                    outstream.write(tmp);
-                } 
+                    outstream.write(tmp); 
+                } */ 
                 
-                String result = OcrImage(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm.jpg")));
+                String result = OcrImage(new FileInputStream(new File("D:\\yzm\\yzm1.jpg")));
                 System.out.println("验证码:"+result);
                 //BufferedImage read = ImageIO.read(new ByteArrayInputStream(tmp));
                 
-        		BufferedImage read = ImageIO.read(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm.jpg")));
+        		BufferedImage read = ImageIO.read(new FileInputStream(new File("D:\\yzm\\yzm1.jpg")));
         		//ImageIO.write(read, "jpg", new File("D:\\zhanghan\\yzm\\yzm.jpg"));
         		BufferedImage read2 = removeBackgroud1(read);
        		    read2 = grayImage(read2);
        		    read2 = erzhihuaImage(read2);
-       		    ImageIO.write(read2, "jpg", new File("D:\\zhanghan\\yzm\\yzm_chuli.jpg"));
+       		    ImageIO.write(read2, "jpg", new File("D:\\yzm\\yzm_chuli1.jpg"));
         		
             } finally {
-                getMethod.releaseConnection();
+               // getMethod.releaseConnection();
             }
         
 	}
