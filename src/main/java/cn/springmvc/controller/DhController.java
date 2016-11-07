@@ -91,13 +91,16 @@ public class DhController {
 		String resultendDate = format1.format(endTime);
 		String resultstartDate = format1.format(startTime);
 		StringBuffer resultFilname = new StringBuffer();
+		StringBuffer hbresultFilname = new StringBuffer();
 		resultFilname.append(resultstartDate+"-"+resultendDate);
 		String resultarrive = vo.getArrive();
 		String[] resultarrives = resultarrive.split("/");
 		if(resultarrives!=null&&resultarrives.length==1){
 			resultFilname.append("_"+resultarrive);
+			hbresultFilname.append(resultarrive);
 		}else if(resultarrives!=null&&resultarrives.length>1){
 			resultFilname.append("_"+resultarrive.replaceAll("/", "_"));
+			hbresultFilname.append(resultarrive.replaceAll("/", "_"));
 		}
 		
 		
@@ -162,42 +165,30 @@ public class DhController {
 			
 			os = response.getOutputStream();
 			//生成原来的xls
-			OutputStream out = new FileOutputStream(filePath+resultFilname+".xls");
+			OutputStream out = new FileOutputStream(filePath+" "+resultFilname+".xls");
 		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
 			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
 	        ex.exportExcel(headers, allList, out);
 	        
 	        /** ========生成qunaer开始========**/
-	        FourExcelZip.qunaerExcel(allList, filePath);
-	        
-	        
+	        FourExcelZip.qunaerExcel(allList, filePath+" qunar_"+hbresultFilname+".xlsx");
 	        /** ========生成qunaer结束========**/
-	        
-	        
-	        
+	      
 	        /** ========生成taobao开始========**/
-	        
-	        
+	        FourExcelZip.taobaoExcel(allList, filePath+" taobao_"+hbresultFilname+".xlsx");
 	        /** ========生成taobao结束========**/
 	        
+	        
 	        /** ========生成tongcheng开始========**/
-	        
-	        
+	        FourExcelZip.tongchengExcel(allList, filePath+" tongcheng_"+hbresultFilname+".xlsx");
 	        /** ========生成tongcheng结束========**/
 	        
 	        /** ========生成ctrip开始========**/
-	        
-	        
+	        FourExcelZip.ctripExcel(allList, filePath+" ctrip_"+hbresultFilname+".xlsx");
 	        /** ========生成ctrip结束========**/
 	        
-
-	        
-	 
-	        
-
-	        
 	        String zipPath = "D:\\zhanghan\\dhDownload\\zip\\";
-	        String dir = zipPath+resultFilname+".xls";
+	        //String dir = zipPath+resultFilname+".xls";
 	        String zipFileName = resultFilname+".zip";
 	        
 	        try{
