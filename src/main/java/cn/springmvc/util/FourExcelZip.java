@@ -71,7 +71,7 @@ public class FourExcelZip {
 	    	   //外部编号
 	    	   newRow.createCell((short) 0).setCellValue("");
 	    	   //文件编号
-	    	   newRow.createCell((short) 1).setCellValue("西南-SGN");
+	    	   newRow.createCell((short) 1).setCellValue("");
 	    	   //产品类型
 	    	   newRow.createCell((short) 2).setCellValue("申请");
 	    	   //开票航空公司
@@ -166,7 +166,7 @@ public class FourExcelZip {
 	    	   //币种
 	    	   newRow.createCell((short) 25).setCellValue("CNY");
 	    	   //儿童价
-	    	   newRow.createCell((short) 26).setCellValue("110%");
+	    	   newRow.createCell((short) 26).setCellValue("100%");
 	    	   //无座婴儿价
 	    	   newRow.createCell((short) 27).setCellValue("");
 	    	   //返点
@@ -286,7 +286,7 @@ public class FourExcelZip {
                //newRow.createCell((short) 4).setCellValue(vo.getRiqi());  //2016-11-17~2016-11-17
                //newRow.createCell((short) 5).setCellValue(vo.getZhongzhuan());  //否
 	    	   //运价代码
-	    	   newRow.createCell((short) 0).setCellValue("");
+	    	   newRow.createCell((short) 0).setCellValue(vo.getHangban());
 	    	   //显示申请
 	    	   newRow.createCell((short) 1).setCellValue("");
 	    	   
@@ -461,7 +461,7 @@ public class FourExcelZip {
 	    	   //外部政策ID
 	    	   newRow.createCell((short) 0).setCellValue("");
 	    	   //文件编号
-	    	   newRow.createCell((short) 1).setCellValue("MU");
+	    	   newRow.createCell((short) 1).setCellValue(vo.getHangban());
 	    	   //出票航司
 	    	   newRow.createCell((short) 2).setCellValue("MU");
 	    	   
