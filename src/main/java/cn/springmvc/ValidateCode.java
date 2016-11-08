@@ -277,7 +277,7 @@ public class ValidateCode {
                 		img.setRGB(x, y, Color.BLACK.getRGB());  
                 	} 
                     if (isWhite1(img.getRGB(x, y)) == 1)  
-                        continue;  
+                        continue; 
                     if (map.containsKey(img.getRGB(x, y))) {  
                         map.put(img.getRGB(x, y), map.get(img.getRGB(x, y)) + 1);  
                     } else {  
