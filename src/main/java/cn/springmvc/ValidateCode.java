@@ -275,7 +275,7 @@ public class ValidateCode {
                 	//删除黑色
                 	if(isblack1(img.getRGB(x, y)) == 1){
                 		img.setRGB(x, y, Color.BLACK.getRGB());  
-                	}
+                	} 
                     if (isWhite1(img.getRGB(x, y)) == 1)  
                         continue;  
                     if (map.containsKey(img.getRGB(x, y))) {  
