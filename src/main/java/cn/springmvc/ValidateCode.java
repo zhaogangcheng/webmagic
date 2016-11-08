@@ -42,6 +42,24 @@ public class ValidateCode {
 		int top=(r+g+b)/3;
 		return (int)(top);
 	}
+    
+    private static int getGray2(int rgb){
+		String str=Integer.toHexString(rgb);
+		int r=Integer.parseInt(str.substring(2,4),16);
+		int g=Integer.parseInt(str.substring(4,6),16);
+		int b=Integer.parseInt(str.substring(6,8),16);
+		
+	/*	int r = Integer.parseInt((str.length() == 3 ? str.substring(0, 1) + str.substring(0, 1) : str.substring(0, 2)), 16);
+		int g = Integer.parseInt((str.length() == 3 ? str.substring(1, 2) + str.substring(1, 2) : str.substring(2, 4)), 16);
+		int */b = Integer.parseInt((str.length() == 3 ? str.substring(2, 3) + str.substring(2, 3) : str.substring(4, 6)), 16);
+		//or 直接new个color对象
+		Color c=new Color(rgb);
+		r=c.getRed();
+	    	g=c.getGreen();
+		b=c.getBlue();
+		int top=(r+g+b)/3;
+		return (int)(top);
+	}
 	
 	/**
 	 * 自己加周围8个灰度值再除以9，算出其相对灰度值
@@ -73,7 +91,7 @@ public class ValidateCode {
 		int[][] gray=new int[w][h];
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
-				gray[x][y]=getGray(image.getRGB(x, y));
+				gray[x][y]=getGray2(image.getRGB(x, y));
 			}
 		}
 		
@@ -180,6 +198,9 @@ public class ValidateCode {
         
         return color.equals(Color.WHITE)?true:false;
     }
+    
+    
+    
 	
     // 2.去除图像干扰像素（非必须操作，只是可以提高精度而已）。
     public static BufferedImage removeInterference(BufferedImage image)  
@@ -196,6 +217,43 @@ public class ValidateCode {
         return image;  
      }
     
+
+    // 2.去除图像干扰像素（非必须操作，只是可以提高精度而已）。
+    public static BufferedImage removeInterference2(BufferedImage image)  
+            throws Exception {  
+        int width = image.getWidth();  
+        int height = image.getHeight();  
+        for (int x = 0; x < width; ++x) {  
+            for (int y = 0; y < height; ++y) {  
+                if (isBlackColor2(image.getRGB(x, y))) {
+                    image.setRGB(x, y, Color.WHITE.getRGB());  
+                }
+            }  
+        }
+        return image;  
+     }
+    
+    
+    private static boolean isBlackColor2(int colorInt) {
+		Color color = new Color(colorInt);
+		int blue = color.getBlue();
+		int green = color.getGreen();
+		int red = color.getRed();
+	   if(((255-red)>160) && ((255-green)>160) && ((255-blue)>160)){
+		//if(blue+green+red >=200){
+			return true;
+		}else{
+			return false;
+		}
+    }
+    
+    private static boolean isShenRGB(int[] colors){
+        int grayLevel = (int) (colors[0] * 0.299 + colors[1] * 0.587 + colors[2] * 0.114);
+        if(grayLevel>=192){
+            return true;
+        }
+        return false;
+    }
     
     /***
      * ====================================测试======================================
@@ -213,8 +271,13 @@ public class ValidateCode {
             for (int x = (int) (1 + i * subWidth); x < (i + 1) * subWidth  
                     && x < width - 1; ++x) {  
                 for (int y = 0; y < height; ++y) {  
+                	
+                	//删除黑色
+                	if(isblack1(img.getRGB(x, y)) == 1){
+                		img.setRGB(x, y, Color.BLACK.getRGB());  
+                	} 
                     if (isWhite1(img.getRGB(x, y)) == 1)  
-                        continue;  
+                        continue; 
                     if (map.containsKey(img.getRGB(x, y))) {  
                         map.put(img.getRGB(x, y), map.get(img.getRGB(x, y)) + 1);  
                     } else {  
@@ -245,10 +308,18 @@ public class ValidateCode {
         return img;  
     } 
     
+    public static int isblack1(int colorInt){
+    	 Color color = new Color(colorInt);  
+         if (color.getRed() + color.getGreen() + color.getBlue() ==0) {  
+             return 1;  
+         }  
+         return 0;  
+    }
+    
     
     public static int isWhite1(int colorInt) {  
         Color color = new Color(colorInt);  
-        if (color.getRed() + color.getGreen() + color.getBlue() >650) {  
+        if (color.getRed() + color.getGreen() + color.getBlue() >700) {  
             return 1;  
         }  
         return 0;  
@@ -353,30 +424,30 @@ public class ValidateCode {
 		
 		
 			//System.setProperty("jna.library.path", "32".equals(System.getProperty("sun.arch.data.model")) ? "lib/win32-x86" : "lib/win32-x86-64");
-			//System.out.println(OcrImage(new FileInputStream(new File("D:\\zhanghan\\yzm\\yzm1.jpg"))));;
-			//HttpClient httpClient = new DefaultHttpClient();
-          /*  String url = "http://travel.ceair.com/validateCode.vld?29";
-            HttpGet getMethod = new HttpGet(url);*/
+			//System.out.println(OcrImage(new FileInputStream(new File("D:\\yzm\\yzm1.jpg"))));;
+			HttpClient httpClient = new DefaultHttpClient();
+            String url = "http://travel.ceair.com/validateCode.vld?29";
+            HttpGet getMethod = new HttpGet(url);
           try {
-        	  /*      HttpResponse response = httpClient.execute(getMethod, new BasicHttpContext());
+        	     HttpResponse response = httpClient.execute(getMethod, new BasicHttpContext());
                 HttpEntity entity = response.getEntity();
-                InputStream instream = entity.getContent(); */
-         /*       OutputStream outstream = new FileOutputStream(new File("D:\\yzm\\yzm.jpg"));
+                InputStream instream = entity.getContent(); 
+                OutputStream outstream = new FileOutputStream(new File("D:\\yzm\\yzm.jpg"));
                 byte[] tmp = new byte[2048]; 
                 while ((instream.read(tmp)) != -1) {
                     outstream.write(tmp); 
-                } */ 
+                }  
                 
-                String result = OcrImage(new FileInputStream(new File("D:\\yzm\\yzm1.jpg")));
+                String result = OcrImage(new FileInputStream(new File("D:\\yzm\\yzm.jpg")));
                 System.out.println("验证码:"+result);
                 //BufferedImage read = ImageIO.read(new ByteArrayInputStream(tmp));
                 
-        		BufferedImage read = ImageIO.read(new FileInputStream(new File("D:\\yzm\\yzm1.jpg")));
+        		BufferedImage read = ImageIO.read(new FileInputStream(new File("D:\\yzm\\yzm.jpg")));
         		//ImageIO.write(read, "jpg", new File("D:\\zhanghan\\yzm\\yzm.jpg"));
         		BufferedImage read2 = removeBackgroud1(read);
        		    read2 = grayImage(read2);
        		    read2 = erzhihuaImage(read2);
-       		    ImageIO.write(read2, "jpg", new File("D:\\yzm\\yzm_chuli1.jpg"));
+       		    ImageIO.write(read2, "jpg", new File("D:\\yzm\\yzm_chuli.jpg"));
         		
             } finally {
                // getMethod.releaseConnection();
