@@ -480,19 +480,44 @@ public class DhController {
 		List<ExcelVo> resultExcelList = new LinkedList<ExcelVo>();
 		String url =null;
 		String msg = "";
+		HttpConnectionClient httpClient = new HttpConnectionClient();
+		url = "http://781.ceair.com/bookingmanage/booking_bookodAjaxSearch.do?isIT=true";
+		NameValuePair[] nvps = {new NameValuePair("routeType", "ODOW"),new NameValuePair("flightOrder", "0"),new NameValuePair("cabinLevel", "\"\""),new NameValuePair("adtCount", "1"),new NameValuePair("kamno", "\"\""),new NameValuePair("retDate", "\"\""),new NameValuePair("depDate", endDate),new NameValuePair("arrAirpCd", arrive),new NameValuePair("depAirpCd", from),new NameValuePair("segIndex", "0") };
 		try{
-			HttpConnectionClient httpClient = new HttpConnectionClient();
-			url = "http://781.ceair.com/bookingmanage/booking_bookodAjaxSearch.do?isIT=true";
-			NameValuePair[] nvps = {new NameValuePair("routeType", "ODOW"),new NameValuePair("flightOrder", "0"),new NameValuePair("cabinLevel", "\"\""),new NameValuePair("adtCount", "1"),new NameValuePair("kamno", "\"\""),new NameValuePair("retDate", "\"\""),new NameValuePair("depDate", endDate),new NameValuePair("arrAirpCd", arrive),new NameValuePair("depAirpCd", from),new NameValuePair("segIndex", "0") };
 			msg= httpClient.getContextByPostMethod3(url,nvps,"JSESSIONID="+jsessionid);
-			//解析dom
-			List<DiscountFlightInfoVo> resultList = parseDOM(msg,from,arrive,endDate);
-			//转换要导出的数据
-			resultExcelList = convertVo(resultList);
-			
 		}catch(Exception e){
-			logger.error("通過接口去數據出錯：url"+e);
+			logger.error("通過接口去數據出錯：url=="+"from:"+from+"|arrive:"+arrive+"|endDate:"+endDate+"|jsessionid:"+jsessionid);
+			logger.error("通過接口去數據出錯：结果=="+"resultExcelList:"+resultExcelList);
+			try {
+				
+				msg= httpClient.getContextByPostMethod3(url,nvps,"JSESSIONID="+jsessionid);
+				logger.error("前面失败第一次重试成功，：url=="+"from:"+from+"|arrive:"+arrive+"|endDate:"+endDate+"|jsessionid:"+jsessionid);
+			} catch (Exception e2) {
+				logger.error("==重试1==通過接口去數據出錯：url=="+"from:"+from+"|arrive:"+arrive+"|endDate:"+endDate+"|jsessionid:"+jsessionid);
+				logger.error("==重试1==通過接口去數據出錯：结果=="+"resultExcelList:"+resultExcelList);
+				
+				try {
+					msg= httpClient.getContextByPostMethod3(url,nvps,"JSESSIONID="+jsessionid);
+					logger.error("前面失败第二次重试成功，：url=="+"from:"+from+"|arrive:"+arrive+"|endDate:"+endDate+"|jsessionid:"+jsessionid);
+				} catch (Exception e3) {
+					logger.error("==重试2==通過接口去數據出錯：url=="+"from:"+from+"|arrive:"+arrive+"|endDate:"+endDate+"|jsessionid:"+jsessionid);
+					logger.error("==重试2==通過接口去數據出錯：结果=="+"resultExcelList:"+resultExcelList);
+					
+					try {
+						msg= httpClient.getContextByPostMethod3(url,nvps,"JSESSIONID="+jsessionid);
+						logger.error("前面失败第三次重试成功，：url=="+"from:"+from+"|arrive:"+arrive+"|endDate:"+endDate+"|jsessionid:"+jsessionid);
+					} catch (Exception e4) {
+						logger.error("==重试3==通過接口去數據出錯：url=="+"from:"+from+"|arrive:"+arrive+"|endDate:"+endDate+"|jsessionid:"+jsessionid);
+						logger.error("==重试3==通過接口去數據出錯：结果=="+"resultExcelList:"+resultExcelList);
+					}
+				}
+				
+			}
 		}
+		//解析dom
+		List<DiscountFlightInfoVo> resultList = parseDOM(msg,from,arrive,endDate);
+		//转换要导出的数据
+		resultExcelList = convertVo(resultList);
 		return resultExcelList;
 	}
 	
