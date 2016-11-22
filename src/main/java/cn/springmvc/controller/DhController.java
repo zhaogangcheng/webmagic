@@ -487,7 +487,7 @@ public class DhController {
 			msg= httpClient.getContextByPostMethod3(url,nvps,"JSESSIONID="+jsessionid);
 		}catch(Exception e){
 			logger.error("通過接口去數據出錯：url=="+"from:"+from+"|arrive:"+arrive+"|endDate:"+endDate+"|jsessionid:"+jsessionid);
-			logger.error("通過接口去數據出錯：结果=="+"resultExcelList:"+resultExcelList); 
+			logger.error("通過接口去數據出錯：结果=="+"resultExcelList:"+resultExcelList);
 			try {
 				
 				msg= httpClient.getContextByPostMethod3(url,nvps,"JSESSIONID="+jsessionid);
