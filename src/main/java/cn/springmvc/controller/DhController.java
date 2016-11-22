@@ -102,7 +102,7 @@ public class DhController {
 			resultFilname.append("_"+resultarrive.replaceAll("/", "_"));
 			hbresultFilname.append(resultarrive.replaceAll("/", "_"));
 		}
-		
+		System.out.println("==进入自动下载==");
 		
 		//获取天数
 		List<String> listDays = getListDay(stringToCalendar(startDate),stringToCalendar(endDate));
@@ -126,7 +126,7 @@ public class DhController {
 				}//暂停1.5秒后程序继续执行
 			}
 		}
-		
+		System.out.println("==获取数据完成==");
 		//将list中重复的数据重新组装
 		allList = getonlyList(allList);
 		
@@ -139,7 +139,7 @@ public class DhController {
 		if(allList==null||allList.size()<=0){
 			return null;
 		}
-		
+		System.out.println("==进入下载==");
 		
 		/****
 		 *  下载测试
@@ -169,7 +169,7 @@ public class DhController {
 		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
 			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
 	        ex.exportExcel(headers, allList, out);
-	        
+	        System.out.println("==生成对应的excel==");
 	        /** ========生成qunaer开始========**/
 	        FourExcelZip.qunaerExcel(allList, filePath+" qunar_"+hbresultFilname+".xlsx");
 	        /** ========生成qunaer结束========**/
@@ -186,7 +186,7 @@ public class DhController {
 	        /** ========生成ctrip开始========**/
 	        FourExcelZip.ctripExcel(allList, filePath+" ctrip_"+hbresultFilname+".xlsx");
 	        /** ========生成ctrip结束========**/
-	        
+	        System.out.println("==生成excel完成，开始下载zip==");
 	        String zipPath = "D:\\zhanghan\\dhDownload\\zip\\";
 	        //String dir = zipPath+resultFilname+".xls";
 	        String zipFileName = resultFilname+".zip";
@@ -200,7 +200,7 @@ public class DhController {
 	        	e.printStackTrace();
 	        }
 	        ZipUtil.downZip(response, zipPath+zipFileName, zipFileName);
-	        
+	        System.out.println("==下载zip完成==");
 	        //JOptionPane.showMessageDialog(null, "导出成功!");  
             System.out.println("excel导出成功！");  
 			
