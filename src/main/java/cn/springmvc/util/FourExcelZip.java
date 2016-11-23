@@ -7,10 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -18,11 +19,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import cn.springmvc.controller.MainController;
-import cn.springmvc.vo.Book;
 import cn.springmvc.vo.ExcelVo;
 
 public class FourExcelZip {
-	
+	static Log logger = LogFactory.getLog(FourExcelZip.class);
 	
 	public static void ctripExcel(List<ExcelVo> allList,String outputFilePath){
 		String file = MainController.class.getClassLoader()
@@ -657,10 +657,13 @@ public class FourExcelZip {
 			ins = new FileInputStream(new File(file));
 			wb = WorkbookFactory.create(ins);
 		} catch (InvalidFormatException e) {
+			logger.error("qunaerecxcel:",e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			logger.error("qunaerecxcel:",e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("qunaerecxcel:",e);
 			e.printStackTrace();
 		}
 		try {
@@ -848,7 +851,7 @@ public class FourExcelZip {
 	    	   //GDS来源
 	    	   newRow.createCell((short) 53).setCellValue("");
 	    	   //报销凭证类型
-	    	   newRow.createCell((short) 54).setCellValue("10080m");
+	    	   newRow.createCell((short) 54).setCellValue("10080m"); 
            } 
 		// 将修改后的数据保存
 		String filePath = outputFilePath;
@@ -860,6 +863,7 @@ public class FourExcelZip {
 				out.close();
 			}
 		} catch (FileNotFoundException e) {
+			logger.error("生成qunaerecxcel:",e);
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();

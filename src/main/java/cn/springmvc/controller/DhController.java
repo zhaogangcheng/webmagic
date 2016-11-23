@@ -73,7 +73,7 @@ public class DhController {
 	@ResponseBody
 	@RequestMapping(value="/autoDownload",method={RequestMethod.POST })
 	public Map<String, Object> autoDownload(HttpServletRequest request,  HttpServletResponse response,HQQueryVo vo){
-		
+		 logger.error("test=======");
 		if (vo == null){
 			return null;
 		}
@@ -102,7 +102,7 @@ public class DhController {
 			resultFilname.append("_"+resultarrive.replaceAll("/", "_"));
 			hbresultFilname.append(resultarrive.replaceAll("/", "_"));
 		}
-		System.out.println("==进入自动下载==");
+		logger.info("==进入自动下载==");
 		
 		//获取天数
 		List<String> listDays = getListDay(stringToCalendar(startDate),stringToCalendar(endDate));
@@ -122,11 +122,12 @@ public class DhController {
 			    try {
 					thread.sleep(1500);
 				} catch (InterruptedException e) {
+					logger.error("getDomMSg错误",e);
 					e.printStackTrace();
 				}//暂停1.5秒后程序继续执行
 			}
 		}
-		System.out.println("==获取数据完成==");
+		logger.info("==获取数据完成==");
 		//将list中重复的数据重新组装
 		allList = getonlyList(allList);
 		
@@ -169,7 +170,7 @@ public class DhController {
 		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
 			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
 	        ex.exportExcel(headers, allList, out);
-	        System.out.println("==生成对应的excel==");
+	        logger.info("==生成对应的excel==");
 	        /** ========生成qunaer开始========**/
 	        FourExcelZip.qunaerExcel(allList, filePath+" qunar_"+hbresultFilname+".xlsx");
 	        /** ========生成qunaer结束========**/
@@ -186,7 +187,7 @@ public class DhController {
 	        /** ========生成ctrip开始========**/
 	        FourExcelZip.ctripExcel(allList, filePath+" ctrip_"+hbresultFilname+".xlsx");
 	        /** ========生成ctrip结束========**/
-	        System.out.println("==生成excel完成，开始下载zip==");
+	        logger.info("==生成excel完成，开始下载zip==");
 	        String zipPath = "D:\\zhanghan\\dhDownload\\zip\\";
 	        //String dir = zipPath+resultFilname+".xls";
 	        String zipFileName = resultFilname+".zip";
@@ -197,15 +198,16 @@ public class DhController {
 	        	
 	        	
 	        }catch(Exception e){
+	            logger.error("生产解压缩文件错误",e);
 	        	e.printStackTrace();
 	        }
 	        ZipUtil.downZip(response, zipPath+zipFileName, zipFileName);
-	        System.out.println("==下载zip完成==");
+	        logger.info("==下载zip完成==");
 	        //JOptionPane.showMessageDialog(null, "导出成功!");  
-            System.out.println("excel导出成功！");  
+	        logger.info("excel导出成功！");  
 			
 		} catch (IOException e) {
-			System.out.println("获取流失败");
+			logger.error("获取流失败",e);
 			e.printStackTrace();
 		}finally {
 			try{
@@ -213,7 +215,7 @@ public class DhController {
 					os.close();  
 				} 
 			}catch(IOException e){
-				System.out.println("获取流失败");
+				logger.error("获取流失败",e);
 				e.printStackTrace();
 			}
 			
@@ -222,7 +224,7 @@ public class DhController {
 		//删除excel文件
     	ZipUtil.deleteFiles(filePath); 
 		
-		System.out.println("=====downloads======"+	allList.size());
+    	logger.info("=====downloads======"+	allList.size());
 		/****
 		 *  下载测试
 		 */
@@ -236,7 +238,7 @@ public class DhController {
 		long timeTwo=System.currentTimeMillis();
 		//System.out.println("相隔"+(timeTwo-timeOne)+"秒");
 		long minute=(timeTwo-timeOne)/(1000);//转化minute
-		System.out.println("相隔"+minute+"秒");
+		logger.info("相隔"+minute+"秒");
 		map.put("timer", minute);
 	    return map;
 	}

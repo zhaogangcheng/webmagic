@@ -19,9 +19,11 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ZipUtil {
-	
+	static Log logger = LogFactory.getLog(ZipUtil.class);
 	
 	//删除单个文件
 	public static void deleteFile(String filePath, String fileName){
@@ -306,12 +308,13 @@ public class ZipUtil {
 			}
 			myout.flush();
 		} catch (Exception e) {
-			System.out.println(e);
+			 logger.error("downZip生产解压缩文件错误",e);
 		} finally {
 		      if (fis!= null) {
 			        try {
 			        	fis.close();
 			        } catch (Exception e) {
+			       	 logger.error("downZip生产解压缩文件错误",e);
 			          throw new RuntimeException(e);
 			        }
 			      }
