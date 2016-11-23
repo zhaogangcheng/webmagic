@@ -23,7 +23,7 @@ import cn.springmvc.ValidateCode;
 public class Login {
 	
 	
-	public static String getLoginJessionId() throws Exception   
+	public static String getLoginJessionId(String username, String password) throws Exception   
     {  
 		
 		 HttpClient httpClient = new HttpClient();
@@ -34,7 +34,7 @@ public class Login {
 		String kaptcha = identifyImg(); 
 		
 		//利用图片的cookie去模拟登录
-		String loginSession = getLoginSession(httpClient,imgcookie,kaptcha);
+		String loginSession = getLoginSession(httpClient,imgcookie,kaptcha,username,password);
 		
 		
 		//利用登录的cookie去做home的操作 http://travel.ceair.com/home_f.do
@@ -68,11 +68,13 @@ public class Login {
               return result;
  	}
 	
-	public static String getLoginSession( HttpClient httpClient, String imgcookie,String kaptcha) throws Exception{
+	public static String getLoginSession( HttpClient httpClient, String imgcookie,String kaptcha,String username, String password) throws Exception{
 		
 		String url = "http://travel.ceair.com/log_f.do";
-		String j_username = "hnkt";
-		String j_password = "e10adc3949ba59abbe56e057f20f883e";
+		//String j_username = "hnkt";
+		String j_username = username;
+		//String j_password = "e10adc3949ba59abbe56e057f20f883e";
+		String j_password = password;
 		NameValuePair[] nvps = {new NameValuePair("j_username", j_username),new NameValuePair("j_password", j_password),new NameValuePair("kaptcha", kaptcha) };
 		//String loginCookie= httpClient.getContextByPostMethodLogin(url,nvps,imgcookie);
 		// 设置编码

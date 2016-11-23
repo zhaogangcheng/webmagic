@@ -17,6 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script src="<%=basePath%>/js/jquery/jquery-1.3.2.min.js"></script>
     <script src="<%=basePath%>/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
      <script src="<%=basePath%>/js/jquery/jquery-ui-jqLoding.js"></script>
+      <script src="<%=basePath%>/js/jquery/jquery.md5.js"></script>
     <link href="<%=basePath%>/js/jquery/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css"/>
 
 	<!-- For-Mobile-Apps-and-Meta-Tags -->
@@ -39,6 +40,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 		<div class="left w3l">
 		<h3>Check Flight</h3>
+		<input type="text" id="j_username" class="name" name="j_username" placeholder="用户名" required="">
+		<input type="password" id="j_password" class="location" name="j_password" placeholder="密码" required="">
 		<div style="position: relative;left: 44%;margin-bottom: 15px;"> <a style="color:yellow;cursor:pointer" id="logina" onclick="login()"  >自动登录(未登录)</a></div>
 		<div style="position: relative;left: 45%;margin-bottom: 15px;"> <a style="color:red" target="_blank" href="properties.jsp">航班屏蔽配置</a> </div>
 			<div class="register agileits">
@@ -73,10 +76,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script>
 	
 	function login(){
+		
+		var username = $("#j_username").val();
+		if(!username){
+			alert("请填写用户名");
+			return;
+		}
+		var passwordb = $("#j_password").val();
+		if(!passwordb){
+			alert("请填写密码");
+			return;
+		}
+		var password = $.md5(passwordb);
+		
+		
+		var data={"from":username,"arrive":password};  
 		$.ajax({
-            type: "get",
+            type: "post",
             url: "./dh/login",
-           // data: data, 
+            data: data, 
             dataType: 'json',
             beforeSend:function () {
                 $.fn.jqLoading({ height: 100, width: 240, text: "正在登录，请耐心等待...." });
@@ -91,7 +109,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             		$("#jsid").val(result.jsessionid);
             	}else{
             		$("#logina").css("color","yellow")
-            		$("#logina").html("自动登录(验证码错误！)");
+            		$("#logina").html("自动登录(验证码错误或用户名密码错误！)");
             		$("#jsid").val("");
             	}
             }

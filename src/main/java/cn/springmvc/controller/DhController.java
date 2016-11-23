@@ -54,12 +54,17 @@ public class DhController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/login",method={RequestMethod.GET })
-	public Map<String, Object> login(HttpServletRequest request,  HttpServletResponse response){
+	@RequestMapping(value="/login",method={RequestMethod.POST })
+	public Map<String, Object> login(HttpServletRequest request,  HttpServletResponse response,HQQueryVo vo){
+		if(vo==null){
+			logger.error("传递的vo为空");
+		}
+		String username = vo.getFrom();
+		String password = vo.getArrive();
 		Map<String,Object> map = new HashMap<String,Object>();  
 		String jsessionid = "";
 		try {
-			jsessionid = Login.getLoginJessionId();
+			jsessionid = Login.getLoginJessionId(username,password);
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		}
