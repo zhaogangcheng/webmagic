@@ -18,6 +18,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
@@ -33,6 +35,8 @@ import org.apache.poi.hssf.util.HSSFColor;
 import cn.springmvc.vo.Student;
 
 public class ExportExcel<T> {
+	
+	Log logger = LogFactory.getLog(ExportExcel.class);
 	
 	 public void exportExcel(Collection<T> dataset, OutputStream out)  
 	    {  
@@ -70,6 +74,8 @@ public class ExportExcel<T> {
 	    public void exportExcel(String title, String[] headers,  
 	            Collection<T> dataset, OutputStream out, String pattern)  
 	    {  
+	    	logger.info("开始生成总的Excel");
+	    	
 	        // 声明一个工作薄  
 	        HSSFWorkbook workbook = new HSSFWorkbook();  
 	        // 生成一个表格  
@@ -237,22 +243,27 @@ public class ExportExcel<T> {
 	                catch (SecurityException e)  
 	                {  
 	                    e.printStackTrace();  
+	                    logger.error("===SecurityException===错误"+e);
 	                }  
 	                catch (NoSuchMethodException e)  
 	                {  
 	                    e.printStackTrace();  
+	                    logger.error("===SecurityException===错误"+e);
 	                }  
 	                catch (IllegalArgumentException e)  
 	                {  
 	                    e.printStackTrace();  
+	                    logger.error("===IllegalArgumentException===错误"+e);
 	                }  
 	                catch (IllegalAccessException e)  
 	                {  
 	                    e.printStackTrace();  
+	                    logger.error("===IllegalAccessException===错误"+e);
 	                }  
 	                catch (InvocationTargetException e)  
 	                {  
 	                    e.printStackTrace();  
+	                    logger.error("===InvocationTargetException===错误"+e);
 	                }  
 	                finally  
 	                {  
@@ -266,7 +277,9 @@ public class ExportExcel<T> {
 	        }  
 	        catch (IOException e)  
 	        {  
+	        	
 	            e.printStackTrace();  
+	            logger.error("===out===错误"+e);
 	        }    finally  
             {  
                 // 清理资源  

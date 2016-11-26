@@ -34,10 +34,13 @@ public class FourExcelZip {
 			ins = new FileInputStream(new File(file));
 			wb = WorkbookFactory.create(ins);
 		} catch (InvalidFormatException e) {
+			logger.error("ctripecxcel:",e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			logger.error("ctripecxcel:",e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("ctripecxcel:",e);
 			e.printStackTrace();
 		}
 		try {
@@ -45,6 +48,7 @@ public class FourExcelZip {
 				ins.close();	
 			}
 		} catch (IOException e) {
+			logger.error("ctripecxcel:",e);
 			e.printStackTrace();
 		}
 
@@ -232,8 +236,10 @@ public class FourExcelZip {
 				out.close();
 			}
 		} catch (FileNotFoundException e) {
+			logger.error("ctripecxcel:",e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("ctripecxcel:",e);
 			e.printStackTrace();
 		}
 	
@@ -251,10 +257,13 @@ public class FourExcelZip {
 			ins = new FileInputStream(new File(file));
 			wb = WorkbookFactory.create(ins);
 		} catch (InvalidFormatException e) {
+			logger.error("tongchengecxcel:",e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			logger.error("tongchengecxcel:",e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("tongchengecxcel:",e);
 			e.printStackTrace();
 		}
 		try {
@@ -262,6 +271,7 @@ public class FourExcelZip {
 				ins.close();	
 			}
 		} catch (IOException e) {
+			logger.error("tongchengecxcel:",e);
 			e.printStackTrace();
 		}
 
@@ -406,8 +416,10 @@ public class FourExcelZip {
 				out.close();
 			}
 		} catch (FileNotFoundException e) {
+			logger.error("tongchengecxcel:",e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("tongchengecxcel:",e);
 			e.printStackTrace();
 		}
 	
@@ -424,10 +436,13 @@ public class FourExcelZip {
 			ins = new FileInputStream(new File(file));
 			wb = WorkbookFactory.create(ins);
 		} catch (InvalidFormatException e) {
+			logger.error("taobaoecxcel:",e);
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			logger.error("taobaoecxcel:",e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("taobaoecxcel:",e);
 			e.printStackTrace();
 		}
 		try {
@@ -435,6 +450,7 @@ public class FourExcelZip {
 				ins.close();	
 			}
 		} catch (IOException e) {
+			logger.error("taobaoecxcel:",e);
 			e.printStackTrace();
 		}
 
@@ -638,8 +654,10 @@ public class FourExcelZip {
 				out.close();
 			}
 		} catch (FileNotFoundException e) {
+			logger.error("taobaoecxcel:",e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("taobaoecxcel:",e);
 			e.printStackTrace();
 		}
 	

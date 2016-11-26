@@ -167,14 +167,20 @@ public class DhController {
 		{       
 		    iscunzai.mkdir(); 
 		}
+		
 		try {
-			
 			os = response.getOutputStream();
 			//生成原来的xls
 			OutputStream out = new FileOutputStream(filePath+" "+resultFilname+".xls");
 		    String[] headers =  { "航路", "可售航班", "舱位", "价格", "旅行日期", "隔日中转"};  
 			ExportExcel<ExcelVo> ex = new ExportExcel<ExcelVo>(); 
 	        ex.exportExcel(headers, allList, out);
+		} catch (Exception e) {
+			   logger.error("==在外面生成总的excel=="+e);
+		}
+		
+		try {
+		
 	        logger.info("==生成对应的excel==");
 	        /** ========生成qunaer开始========**/
 	        FourExcelZip.qunaerExcel(allList, filePath+" qunar_"+hbresultFilname+".xlsx");
