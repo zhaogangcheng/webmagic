@@ -431,7 +431,8 @@ public class DhController {
 						int m =li.getRiqi().indexOf("~");
 						String enddate = li.getRiqi().substring(m+1);
 						String lastdate = lj.getRiqi();
-						int diff = stringToCalendar(enddate).compareTo(stringToCalendar(lastdate));
+						//int diff = stringToCalendar(enddate).compareTo(stringToCalendar(lastdate));
+						long diff = (stringToCalendar(enddate).getTimeInMillis()-stringToCalendar(lastdate).getTimeInMillis())/(1000*60*60*24);
 						if(diff==-1){
 							li.setRiqi(li.getRiqi().substring(0,m)+"~"+lastdate);
 							//lj vo中的数据变换成www
@@ -442,7 +443,8 @@ public class DhController {
 						int m =lj.getRiqi().indexOf("~");
 						String enddate = lj.getRiqi().substring(m+1);
 						String lastdate = li.getRiqi();
-						int diff = stringToCalendar(enddate).compareTo(stringToCalendar(lastdate));
+						long diff = (stringToCalendar(enddate).getTimeInMillis()-stringToCalendar(lastdate).getTimeInMillis())/(1000*60*60*24);
+						//int diff = stringToCalendar(enddate).compareTo(stringToCalendar(lastdate));
 						if(diff==-1){
 							lj.setRiqi(lj.getRiqi().substring(0,m)+"~"+lastdate);
 							//lj vo中的数据变换成www
@@ -451,8 +453,8 @@ public class DhController {
 					}else{
 						String ljdate = lj.getRiqi();
 						String lidate = li.getRiqi();
-						int diff = stringToCalendar(ljdate).compareTo(stringToCalendar(lidate));
-						
+						//int diff = stringToCalendar(ljdate).compareTo(stringToCalendar(lidate));
+						long diff = (stringToCalendar(ljdate).getTimeInMillis()-stringToCalendar(lidate).getTimeInMillis())/(1000*60*60*24);
 						if(diff==-1){
 							lj.setRiqi(lj.getRiqi()+"~"+li.getRiqi());
 							li.setHanglu("www");
@@ -468,6 +470,38 @@ public class DhController {
 		}
 		
 		return list;
+	}
+	
+	
+	public static void main(String[] args) {
+		String enddate ="2016-12-04";
+		String lastdate ="2016-12-10";
+		long diff = (stringToCalendars(enddate).getTimeInMillis()-stringToCalendars(lastdate).getTimeInMillis())/(1000*60*60*24);
+		if(diff>-7){
+			System.out.println("OK");
+		}
+		System.out.println(diff);
+		
+		 Calendar a = Calendar.getInstance(),
+	              b = Calendar.getInstance();
+	        a.set(2015, Calendar.MARCH, 31);
+	        b.set(2015, Calendar.APRIL, 1);
+	        long diffDays = (b.getTimeInMillis() - a.getTimeInMillis()) / (1000 * 60 * 60 * 24);
+	        System.out.println(diffDays);
+		
+	}
+	
+	public static Calendar stringToCalendars(String str){
+		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = sdf.parse(str);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return calendar;
 	}
 	
 	//笛卡尔积获取起飞抵达组合
