@@ -192,12 +192,22 @@ public class DhController {
 	        
 	        
 	        /** ========生成tongcheng开始========**/
-	        FourExcelZip.tongchengExcel(allList, filePath+" tongcheng_"+hbresultFilname+".xlsx");
+	        //就的同程注释 不删除以备后面再用
+	        //FourExcelZip.tongchengExcel(allList, filePath+" tongcheng_"+hbresultFilname+".xlsx");
+	        /** ========生成tongcheng结束========**/
+	        /** ========生成tongcheng开始========**/
+	        //就的同程注释 不删除以备后面再用
+	        FourExcelZip.newTongchengExcel(allList, filePath+" tongcheng_"+hbresultFilname+".xlsx");
 	        /** ========生成tongcheng结束========**/
 	        
 	        /** ========生成ctrip开始========**/
 	        FourExcelZip.ctripExcel(allList, filePath+" ctrip_"+hbresultFilname+".xlsx");
 	        /** ========生成ctrip结束========**/
+	        
+	        /** ========生成天巡开始========**/
+	        FourExcelZip.tianxunExcel(allList, filePath+" tianxun_"+hbresultFilname+".xlsx");
+	        /** ========生成ctrip结束========**/
+	        
 	        logger.info("==生成excel完成，开始下载zip==");
 	        String zipPath = "D:\\zhanghan\\dhDownload\\zip\\";
 	        //String dir = zipPath+resultFilname+".xls";
