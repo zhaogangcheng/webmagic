@@ -680,10 +680,24 @@ public class FourExcelZip {
 	    	   ExcelVo vo = (ExcelVo) allList.get(i);  
             
 	    	   
+	    	   
+	    	   
+	    	   String hanglu = vo.getHanglu();
+	    	   String firsthanglu  = "";
+	    	   String middlehanglu  = "";
+	    	   String lasthanglu  = "";
+	    	   if(StringUtils.isNotBlank(hanglu)&&hanglu.indexOf("-")>0){
+	    		  String hanglus[] = hanglu.split("\\-");
+	    		  if (hanglus!=null&&hanglus.length==3){
+	    			  firsthanglu = hanglus[0];
+	    			  middlehanglu =  hanglus[1];
+	    			  lasthanglu = hanglus[2];
+	    		  }
+	    	   }
 	    	   //运价代码
 	    	  // newRow.createCell((short) 0).setCellValue(vo.getHangban());
 	    	   //私有政策
-	    	   newRow.createCell((short) 0).setCellValue("");
+	    	   //newRow.createCell((short) 0).setCellValue("");
 	    	   
 	    	   
 	    	   String hangban = vo.getHangban();
@@ -706,41 +720,30 @@ public class FourExcelZip {
 	    	   }
 	    	   
 	    	   //文件编号
-	    	   newRow.createCell((short) 1).setCellValue(quchenghangsi);
+	    	   newRow.createCell((short) 0).setCellValue("MU"+firsthanglu);
 	    	   
 	    	   //外部政策ID
-	    	   newRow.createCell((short) 2).setCellValue("");
+	    	   newRow.createCell((short) 1).setCellValue("");
 
 	    	   //产品类型
-	    	   newRow.createCell((short) 3).setCellValue("特惠");
+	    	   newRow.createCell((short) 2).setCellValue("特惠");
 	    	   //开票航司
-	    	   newRow.createCell((short) 4).setCellValue("MU");
+	    	   newRow.createCell((short) 3).setCellValue("MU");
 	    	   //录入方式
-	    	   newRow.createCell((short) 5).setCellValue("机场");
+	    	   newRow.createCell((short) 4).setCellValue("机场");
 	    	   
-	    	   String hanglu = vo.getHanglu();
-	    	   String firsthanglu  = "";
-	    	   String middlehanglu  = "";
-	    	   String lasthanglu  = "";
-	    	   if(StringUtils.isNotBlank(hanglu)&&hanglu.indexOf("-")>0){
-	    		  String hanglus[] = hanglu.split("\\-");
-	    		  if (hanglus!=null&&hanglus.length==3){
-	    			  firsthanglu = hanglus[0];
-	    			  middlehanglu =  hanglus[1];
-	    			  lasthanglu = hanglus[2];
-	    		  }
-	    	   }
+	    	 
 	    	   //起飞机场
 	    	   //newRow.createCell((short) 3).setCellValue(firsthanglu);
 	    	   
 	    	   //出发地
-	    	   newRow.createCell((short) 6).setCellValue(firsthanglu);
+	    	   newRow.createCell((short) 5).setCellValue(firsthanglu);
 	    	   //目的地
-	    	   newRow.createCell((short) 7).setCellValue(lasthanglu);
+	    	   newRow.createCell((short) 6).setCellValue(lasthanglu);
 	    	   //是否中转
-	    	   newRow.createCell((short) 8).setCellValue("是"); 
+	    	   newRow.createCell((short) 7).setCellValue("是"); 
 	    	   //中转点
-	    	    newRow.createCell((short) 9).setCellValue(middlehanglu);
+	    	    newRow.createCell((short) 8).setCellValue(middlehanglu);
 	    	 
 	    	    
 	    	   //中转机场
@@ -761,80 +764,80 @@ public class FourExcelZip {
 	    	   }
 	    	   
 	    	   //适用舱位
-	    	 newRow.createCell((short) 10).setCellValue(firstchangwei+","+secondchangwei);
+	    	 newRow.createCell((short) 9).setCellValue(firstchangwei+","+secondchangwei);
 	    	 //航司组合
-	    	 newRow.createCell((short) 11).setCellValue(hangsi);
+	    	 newRow.createCell((short) 10).setCellValue(hangsi);
 	    	 //可售航班
-	    	 newRow.createCell((short) 12).setCellValue(firsthangban+","+secondhangban);
+	    	 newRow.createCell((short) 11).setCellValue(firsthangban+","+secondhangban);
 	    	 //禁售航班
-	    	 newRow.createCell((short) 13).setCellValue("");
+	    	 newRow.createCell((short) 12).setCellValue("");
 	    	 //中途停留
-	    	 newRow.createCell((short) 14).setCellValue("允许");
+	    	 newRow.createCell((short) 13).setCellValue("允许");
 	    	 //销售日期
-	    	 newRow.createCell((short) 15).setCellValue(vo.getRiqi());
+	    	 newRow.createCell((short) 14).setCellValue(vo.getRiqi().replaceAll("\\~", "\\>"));
 	    	 //旅行日期
-	    	 newRow.createCell((short) 16).setCellValue(vo.getRiqi());
+	    	 newRow.createCell((short) 15).setCellValue(vo.getRiqi().replaceAll("\\~", "\\>"));
 	    	 //排除旅行日期	
-	    	 newRow.createCell((short) 17).setCellValue("");
+	    	 newRow.createCell((short) 16).setCellValue("");
 	    	 //提前出票天数	
-	    	 newRow.createCell((short) 18).setCellValue("1");
+	    	 newRow.createCell((short) 17).setCellValue("1");
 	    	 //出票时长类型
-	    	 newRow.createCell((short) 19).setCellValue("0");
+	    	 newRow.createCell((short) 18).setCellValue("0");
 	    	 //适用班期	
-	    	 newRow.createCell((short) 20).setCellValue("1234567");
+	    	 newRow.createCell((short) 19).setCellValue("1234567");
 	    	 //最小出行人数	
-	    	 newRow.createCell((short) 21).setCellValue("1");
+	    	 newRow.createCell((short) 20).setCellValue("1");
 	    	 //最大出行人数	
-	    	 newRow.createCell((short) 22).setCellValue("9");
+	    	 newRow.createCell((short) 21).setCellValue("9");
 	    	 //适用旅客	
-	    	 newRow.createCell((short) 23).setCellValue("普通成人,儿童");
+	    	 newRow.createCell((short) 22).setCellValue("普通成人,儿童");
 	    	 //成人销售票面价	
-	    	 newRow.createCell((short) 24).setCellValue(vo.getJiage());
+	    	 newRow.createCell((short) 23).setCellValue(vo.getJiage());
 	    	 //儿童销售票面价	
-	    	 newRow.createCell((short) 25).setCellValue("100%");
+	    	 newRow.createCell((short) 24).setCellValue(vo.getJiage());
 	    	 //结算币种	
-	    	 newRow.createCell((short) 26).setCellValue("CNY");
+	    	 newRow.createCell((short) 25).setCellValue("CNY");
 	    	 //返点	
-	    	 newRow.createCell((short) 27).setCellValue("0.00");
+	    	 newRow.createCell((short) 26).setCellValue("0.00");
 	    	 //留钱	
-	    	 newRow.createCell((short) 28).setCellValue("50");
+	    	 newRow.createCell((short) 27).setCellValue("50");
 	    	 //预订配置	
-	    	 newRow.createCell((short) 29).setCellValue("同程预订");
+	    	 newRow.createCell((short) 28).setCellValue("同程预订");
 	    	 //授权OFFICE	
-	    	 newRow.createCell((short) 30).setCellValue("HAK166");
+	    	 newRow.createCell((short) 29).setCellValue("HAK166");
 	    	 //报销凭证	
-	    	 newRow.createCell((short) 31).setCellValue("行程单");
+	    	 newRow.createCell((short) 30).setCellValue("行程单");
 	    	 //是否允许改期	
-	    	 newRow.createCell((short) 32).setCellValue("不允许");
+	    	 newRow.createCell((short) 31).setCellValue("不允许");
 	    	 //改期费	
-	    	 newRow.createCell((short) 33).setCellValue("");
+	    	 newRow.createCell((short) 32).setCellValue("");
 	    	 //未使用是否允许退票	
-	    	 newRow.createCell((short) 34).setCellValue("不允许");
+	    	 newRow.createCell((short) 33).setCellValue("不允许");
 	    	 //全部未使用退票费用	
-	    	 newRow.createCell((short) 35).setCellValue("");
+	    	 newRow.createCell((short) 34).setCellValue("");
 	    	 //是否允许NOSHOW	
-	    	 newRow.createCell((short) 36).setCellValue("不允许");
+	    	 newRow.createCell((short) 35).setCellValue("不允许");
 	    	 //NOSHOW费	
-	    	 newRow.createCell((short) 37).setCellValue("");
+	    	 newRow.createCell((short) 36).setCellValue("");
 	    	 //NOSHOW说明	
-	    	 newRow.createCell((short) 38).setCellValue("");
+	    	 newRow.createCell((short) 37).setCellValue("");
 	    	 //购票须知	
-	    	 newRow.createCell((short) 39).setCellValue("");
+	    	 newRow.createCell((short) 38).setCellValue("");
 	    	 
 	    	 //行李规格
-	    	 newRow.createCell((short) 40).setCellValue("KG");
+	    	 newRow.createCell((short) 39).setCellValue("KG");
 	    	 //行李额	
-	    	 newRow.createCell((short) 41).setCellValue("20");
+	    	 newRow.createCell((short) 40).setCellValue("20");
 	    	 //当日作废	
-	    	 newRow.createCell((short) 42).setCellValue("不允许");
+	    	 newRow.createCell((short) 41).setCellValue("不允许");
 	    	 
 	    	 //废票费	
-	    	 newRow.createCell((short) 43).setCellValue("");
+	    	 newRow.createCell((short) 42).setCellValue("");
 	    	 //备注	
-	    	 newRow.createCell((short) 44).setCellValue("");
+	    	 newRow.createCell((short) 43).setCellValue("");
 	    	 
 	    	 //创建状态
-	    	 newRow.createCell((short) 45).setCellValue("投放中");
+	    	 newRow.createCell((short) 44).setCellValue("投放中");
 	    	 
 	    	 
 	    	 
