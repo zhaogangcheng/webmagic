@@ -206,7 +206,11 @@ public class DhController {
 	        
 	        /** ========生成天巡开始========**/
 	        FourExcelZip.tianxunExcel(allList, filePath+" tianxun_"+hbresultFilname+".xlsx");
-	        /** ========生成ctrip结束========**/
+	        /** ========生成天巡结束========**/
+	        
+	        /** ========生成途牛开始========**/
+	        FourExcelZip.tuniuExcel(allList, filePath+" tuniu_"+hbresultFilname+".xlsx");
+	        /** ========生成途牛结束========**/
 	        
 	        logger.info("==生成excel完成，开始下载zip==");
 	        String zipPath = "D:\\zhanghan\\dhDownload\\zip\\";

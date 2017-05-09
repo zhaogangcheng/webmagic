@@ -247,6 +247,200 @@ public class FourExcelZip {
 	
 	}
 	
+	public static void tuniuExcel(List<ExcelVo> allList,String outputFilePath){
+		String file = MainController.class.getClassLoader()
+				.getResource("tuniu.xlsx").getPath();
+		InputStream ins = null;
+		Workbook wb = null;
+	
+		try {
+			ins = new FileInputStream(new File(file));
+			wb = WorkbookFactory.create(ins);
+		} catch (InvalidFormatException e) {
+			logger.error("tuniu:",e);
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			logger.error("tuniu:",e);
+			e.printStackTrace();
+		} catch (IOException e) {
+			logger.error("tuniu:",e);
+			e.printStackTrace();
+		}
+		try {
+			if(ins!=null){
+				ins.close();	
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// 3.得到Excel工作表对象
+		Sheet sheet = wb.getSheetAt(0);
+		// 总行数
+		int trLength = sheet.getLastRowNum();
+		// 4.得到Excel工作表的行
+		Row row = sheet.getRow(0);
+		// 总列数
+		int tdLength = row.getLastCellNum();
+		 
+	       for (int i = 0; i < allList.size(); i++)  
+           {  
+	    	   Row newRow = sheet.createRow((int) i + 1);  
+	    	   ExcelVo vo = (ExcelVo) allList.get(i);  
+               // 第四步，创建单元格，并设置值  
+               //newRow.createCell((short) 0).setCellValue(vo.getChangwei());  //R+T  T+S
+               //newRow.createCell((short) 1).setCellValue(vo.getHanglu());  //SHA-KMG-SIN
+               //newRow.createCell((short) 2).setCellValue(vo.getHangban());  //MU5804/MU5093
+               //newRow.createCell((short) 3).setCellValue(vo.getJiage());  //640
+               //newRow.createCell((short) 4).setCellValue(vo.getRiqi());  //2016-11-17~2016-11-17
+               //newRow.createCell((short) 5).setCellValue(vo.getZhongzhuan());  //否
+	    	   
+	    	   String hanglu = vo.getHanglu();
+	    	   String firsthanglu  = "";
+	    	   String middlehanglu  = "";
+	    	   String lasthanglu  = "";
+	    	   if(StringUtils.isNotBlank(hanglu)&&hanglu.indexOf("-")>0){
+	    		  String hanglus[] = hanglu.split("\\-");
+	    		  if (hanglus!=null&&hanglus.length==3){
+	    			  firsthanglu = hanglus[0];
+	    			  middlehanglu =  hanglus[1];
+	    			  lasthanglu = hanglus[2];
+	    		  }
+	    	   }
+	    	   //0 文件编号  必填
+	    	   newRow.createCell((short) 0).setCellValue(firsthanglu+"-"+lasthanglu);
+	    	   //1 文件名称
+	    	   newRow.createCell((short) 1).setCellValue("");
+	    	   //2 出票航司 必填
+	    	   newRow.createCell((short) 2).setCellValue("MU");
+	    	   //3 录入方式 必填
+	    	   newRow.createCell((short) 3).setCellValue("机场");
+	    	   //4 航路 必填 
+	    	   newRow.createCell((short) 4).setCellValue(hanglu);
+	    	   //5 适用舱位 必填 
+	    	   String changwei = vo.getChangwei();
+	    	   String firstchangwei = "";
+	    	   String secondchangwei = "";
+	    	   if(StringUtils.isNotBlank(changwei)&&changwei.indexOf("+")>0){
+	    		   String changweis[] = changwei.split("\\+");
+	    		   if (changweis!=null&&changweis.length==2){
+	    			   firstchangwei = changweis[0];
+	    			   secondchangwei = changweis[1];
+	    		   }
+	    	   }
+	    	   newRow.createCell((short) 5).setCellValue(firstchangwei+"-"+secondchangwei);
+	    	   //6 适用farebasis 
+	    	   newRow.createCell((short) 6).setCellValue("");
+	    	   //7 适用航班 
+	    	   newRow.createCell((short) 7).setCellValue("");
+	    	   //8 禁用航班
+	    	   newRow.createCell((short) 8).setCellValue("");
+	    	   //9 是否允许去程中途停留 必填
+	    	   newRow.createCell((short) 9).setCellValue("否");
+	    	   //10 去程班期  必填
+	    	   newRow.createCell((short) 10).setCellValue("1234567");
+	    	   //11 去程班期作用点  必填
+	    	   newRow.createCell((short) 11).setCellValue("第一国际段");
+	    	   //12指定航段
+	    	   newRow.createCell((short) 12).setCellValue("");
+	    	   //13 去程旅行有效期 必填
+	    	   newRow.createCell((short) 13).setCellValue("2017-05-03>2017-06-30");
+	    	   //14 去程旅行日期作用点 必填
+	    	   newRow.createCell((short) 14).setCellValue("第一国际段");
+	    	   // 15 指定航段
+	    	   newRow.createCell((short) 15).setCellValue("");
+	    	   //16 去程除外旅行日期 必填
+	    	   newRow.createCell((short) 16).setCellValue("");
+	    	   //17 销售日期 必填
+	    	   newRow.createCell((short) 17).setCellValue("2017-05-03>2017-06-30");
+	    	   //18 旅客资质 必填
+	    	   newRow.createCell((short) 18).setCellValue("普通");
+	    	   //19 最小出行人数 
+	    	   newRow.createCell((short) 19).setCellValue("1");
+	    	   //20 最大出行人数
+	    	   newRow.createCell((short) 20).setCellValue("9");
+	    	   //21 运价类型
+	    	   newRow.createCell((short) 21).setCellValue("BSP");
+	    	   //22 币种
+	    	   newRow.createCell((short) 22).setCellValue("CNY");
+	    	   //23 成人销售票面价
+	    	   newRow.createCell((short) 23).setCellValue(vo.getJiage());
+	    	   //24 成人返点
+	    	   newRow.createCell((short) 24).setCellValue("0");
+	    	   //25 成人留钱
+	    	   newRow.createCell((short) 25).setCellValue("50");
+	    	   //26 儿童销售票面价
+	    	   newRow.createCell((short) 26).setCellValue("");
+	    	   //27 儿童返点
+	    	   newRow.createCell((short) 27).setCellValue("0");
+	    	   // 28 儿童留钱
+	    	   newRow.createCell((short) 28).setCellValue("0");
+	    	   // 29 婴儿销售票面价
+	    	   newRow.createCell((short) 29).setCellValue("");
+	    	   //30 婴儿返点
+	    	   newRow.createCell((short) 30).setCellValue("0");
+	    	   //31 婴儿留钱
+	    	   newRow.createCell((short) 31).setCellValue("0");
+	    	   //32 出票时限（天）
+	    	   newRow.createCell((short) 32).setCellValue("0-365;365;1");
+	    	   //33 是否创建PNR
+	    	   newRow.createCell((short) 33).setCellValue("是");
+	    	   //34 报销凭证
+	    	   newRow.createCell((short) 34).setCellValue("行程单");
+	    	   //35 适用国籍
+	    	   newRow.createCell((short) 35).setCellValue("");
+	    	   //36 禁用国籍
+	    	   newRow.createCell((short) 36).setCellValue("");
+	    	   //37 年龄限制
+	    	   newRow.createCell((short) 37).setCellValue("");
+	    	   //38 去程可否改期
+	    	   newRow.createCell((short) 38).setCellValue("否");
+	    	   //39 去程改期费用
+	    	   newRow.createCell((short) 39).setCellValue("");
+	    	   //40 全部未使用可否退票
+	    	   newRow.createCell((short) 40).setCellValue("否");
+	    	   //41 全部未使用退票费用
+	    	   newRow.createCell((short) 41).setCellValue("");
+	    	   //42 NOSHOW是否有限制
+	    	   newRow.createCell((short) 42).setCellValue("否");
+	    	   //43 NOSHOW条件
+	    	   newRow.createCell((short) 43).setCellValue("");
+	    	   //44 NOSHOW可否改期
+	    	   newRow.createCell((short) 44).setCellValue("否");
+	    	   //45 NOSHOW改期费用
+	    	   newRow.createCell((short) 45).setCellValue("");
+	    	   //46 NOSHOW可否退票
+	    	   newRow.createCell((short) 46).setCellValue("否");
+	    	   //47 NOSHOW退票费用
+	    	   newRow.createCell((short) 47).setCellValue("");
+	    	   //48office号
+	    	   newRow.createCell((short) 48).setCellValue("HAK166");
+	    	   //49 出票备注
+	    	   newRow.createCell((short) 49).setCellValue("");
+	    	   //50 工作时间
+	    	   newRow.createCell((short) 50).setCellValue("");
+	    	   //51 去程行李额规定
+	    	   newRow.createCell((short) 51).setCellValue("20");
+           } 
+		// 将修改后的数据保存
+		String filePath = outputFilePath;
+		OutputStream out;
+		try {
+			out = new FileOutputStream(filePath);
+			wb.write(out);
+			if(out!=null){
+				out.close();
+			}
+		} catch (FileNotFoundException e) {
+			logger.error("生成qunaerecxcel:",e);
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
+	
 	public static void tianxunExcel(List<ExcelVo> allList,String outputFilePath){
 		String file = MainController.class.getClassLoader()
 				.getResource("tianxun.xlsx").getPath();
