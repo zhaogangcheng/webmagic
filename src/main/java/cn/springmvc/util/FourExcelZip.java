@@ -311,8 +311,24 @@ public class FourExcelZip {
 	    	   newRow.createCell((short) 0).setCellValue(firsthanglu+"-"+lasthanglu);
 	    	   //1 文件名称
 	    	   newRow.createCell((short) 1).setCellValue("");
+	    	   String hangban = vo.getHangban();
+	    	   String firsthangban  = "";
+	    	   String secondhangban  = "";
+	    	   String quchenghangsi = "";
+	    	   if(StringUtils.isNotBlank(hangban)&&hangban.indexOf("/")>0){
+	    		   firsthangban = hangban.substring(0,hangban.indexOf("/"));
+	    		   secondhangban = hangban.substring(hangban.indexOf("/")+1);
+	    	   }
+	    	   if(StringUtils.isNotBlank(firsthangban)&&StringUtils.isNotBlank(secondhangban)){
+	    		   if(firsthangban.substring(0,2).equals(secondhangban.substring(0,2))&&firsthangban.substring(0,2).equals("FM")){
+	    			   quchenghangsi = "FM";
+	    		   }else{
+	    			   quchenghangsi = "MU";
+	    		   }
+	    	   }
+	    	   
 	    	   //2 出票航司 必填
-	    	   newRow.createCell((short) 2).setCellValue("MU");
+	    	   newRow.createCell((short) 2).setCellValue(quchenghangsi);
 	    	   //3 录入方式 必填
 	    	   newRow.createCell((short) 3).setCellValue("机场");
 	    	   //4 航路 必填 
@@ -331,8 +347,9 @@ public class FourExcelZip {
 	    	   newRow.createCell((short) 5).setCellValue(firstchangwei+"-"+secondchangwei);
 	    	   //6 适用farebasis 
 	    	   newRow.createCell((short) 6).setCellValue("");
+	    	   
 	    	   //7 适用航班 
-	    	   newRow.createCell((short) 7).setCellValue("");
+	    	   newRow.createCell((short) 7).setCellValue(hangban);
 	    	   //8 禁用航班
 	    	   newRow.createCell((short) 8).setCellValue("");
 	    	   //9 是否允许去程中途停留 必填
@@ -406,11 +423,11 @@ public class FourExcelZip {
 	    	   //43 NOSHOW条件
 	    	   newRow.createCell((short) 43).setCellValue("");
 	    	   //44 NOSHOW可否改期
-	    	   newRow.createCell((short) 44).setCellValue("否");
+	    	   newRow.createCell((short) 44).setCellValue("");
 	    	   //45 NOSHOW改期费用
 	    	   newRow.createCell((short) 45).setCellValue("");
 	    	   //46 NOSHOW可否退票
-	    	   newRow.createCell((short) 46).setCellValue("否");
+	    	   newRow.createCell((short) 46).setCellValue("");
 	    	   //47 NOSHOW退票费用
 	    	   newRow.createCell((short) 47).setCellValue("");
 	    	   //48office号
