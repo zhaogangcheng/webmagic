@@ -218,15 +218,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			return;
 		}
 		
-		$.fn.jqLoading({ height: 100, width: 400, text: "此次查询成功之后自动下载，请耐心等候！" });
+		//$.fn.jqLoading({ height: 100, width: 400, text: "此次查询成功之后自动下载，请耐心等候！" });
 		
 		
-		setInterval(function(){$.fn.jqLoading("destroy");},5000)
+		//setInterval(function(){$.fn.jqLoading("destroy");},5000)
 		
 		var data={"from":startplace,"arrive":endplace,"starttime":datepickerstart,"endtime":datepickerend,"jsessionid":jsid};  
 		document.myformid.action = "./dh/autoDownload";
 		document.myformid.submit();
-		
+		alert("需要点击确定按钮程序才能开始查询并下载Excel。。。");
 	
 	}
 
